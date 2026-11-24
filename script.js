@@ -93,7 +93,7 @@ const JOYCE_DATA = {
   heartfeltMessage: {
     paragraphs: [
       "Listen to me,love. Pause the teasing for a minute. I know you're usually the one making people laugh and acting strong, but even on your terrible days, you still have me right here.",
-      "Come here, baby girl. You don't need to explain everything right now. You don't owe me an act, big explanations, or vulnerability on command—I care about you because you're my friend and because you matter to me.",
+      "Come here, baby girl. You don't need to explain everything right now. You don't owe me an act, big explanations, or vulnerability on command—I care about you because you're my homie and because you matter to me.",
       "I know you cry sometimes, and I wish I could be there beside you on those nights. Listen to me, Joyce—you don't have to hide those tears from me. Not to force you to talk or try to fix everything. Just to hold your hand, pull you close, let you cry if you need to, and remind you that you don't have to face everything alone.",
       "Let it out. You don't have to pretend you're okay just because everyone expects you to be. And if you can't find the words, that's fine. I'll still be here.",
       "I'm here when you're happy, and I'm here when you're struggling. You can call, text, vent, cry, sit in silence, send a random message at 3 AM, or let me distract you with the most ridiculous nonsense imaginable.",
