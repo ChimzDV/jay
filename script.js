@@ -1,139 +1,233 @@
 /* ==========================================================================
-   THE JOYCE EXPERIENCE — FINAL MOBILE-FIRST IMMERSIVE ENGINE (SCRIPT.JS)
-   Includes Full-Screen Cinematic Ending Sequence & Foreground Sparkle Overlay
+   FOR JAY ♡ — PHASE 3 DARK-ROMANCE INTERACTIVE ENGINE (SCRIPT.JS)
+   Features:
+   - Interactive Seductive Chest Touch & Downward Finger-Slide Opening Experience
+   - Reference Poster Interactions (Polaroid Whisper, Desire Checklist, Stay With Me, 3 Fantasy Circles)
+   - Personal Confession Lockbox (Unlocks when all 3 confessions are opened)
+   - 3-Chapter Progressive Story over her Portrait (assets/jay.jpeg)
+   - Atmospheric Slow Background Reveal of her Eyes (assets/eyes.jpeg)
+   - "Pick Your Temptation" 3-Card Interactive Experience (Slow & Teasing | Close & Intimate | Surprise Me)
+   - Interactive Mood Promise Pills + 4-Mood Late-Night Dial
+   - Dark-Romance Midnight Finale + Separate Optional Chocolate Bonus Easter Egg
    ========================================================================== */
 
-const JOYCE_DATA = {
-  // 1. Audio configuration: probes exact case assets/Song.mp3 and common extensions
-  audio: {
-    candidates: [
-      "assets/Song.mp3",
-      "assets/song.mp3",
-      "assets/Song.m4a",
-      "assets/song.m4a",
-      "assets/Song.ogg",
-      "assets/song.ogg",
-      "assets/Song.wav",
-      "assets/song.wav"
-    ]
+// Automatically normalize 127.0.0.1 to localhost so YouTube's embedded player
+// does not reject the numeric loopback IP with errorCode: "auth" (Error 150).
+if (
+  typeof window !== "undefined" &&
+  window.location &&
+  window.location.hostname === "127.0.0.1" &&
+  (window.location.protocol === "http:" || window.location.protocol === "https:")
+) {
+  window.location.replace(
+    window.location.href.replace("//127.0.0.1", "//localhost")
+  );
+}
+
+const JAY_DATA = {
+  // 1. Official YouTube IFrame Player API Sequential 3-Song Playlist
+  //    Plays sequentially 1 -> 2 -> 3 from beginning to end, independent of scrolling,
+  //    and stops after the 3rd song finishes.
+  //    All primary and fallback video IDs are verified embeddable YouTube tracks.
+  youtubePlaylist: [
+    {
+      index: 0,
+      title: "Wicked Games",
+      artist: "The Weeknd",
+      phaseLabel: "Playlist • Track 1 of 3",
+      videoId: "O1OTWCd40bc",
+      fallbackIds: ["wJ0FCXHl8ig", "vt5MPyvZdEc", "a8ujOHn1ghg"]
+    },
+    {
+      index: 1,
+      title: "Earned It",
+      artist: "The Weeknd",
+      phaseLabel: "Playlist • Track 2 of 3",
+      videoId: "waU75jdUnYw",
+      fallbackIds: ["L0YmZF8jxik", "xe_iCkFsQKE", "aXVtbNRWgAc"]
+    },
+    {
+      index: 2,
+      title: "Adorn",
+      artist: "Miguel",
+      phaseLabel: "Playlist • Track 3 of 3",
+      videoId: "8dM5QYdTo08",
+      fallbackIds: ["eqsiuDFrlEk", "h9UwBwnhJgo", "7DOv07S8OyE"]
+    }
+  ],
+
+  // Reference Section 2 ("I Crave You") polaroid tap whispers
+  craveWhispers: [
+    "I want you. So bad.",
+    "Whether you're dressed or undressed, every picture you share drives me wild.",
+    "I keep wondering how your skin will feel the first time my hands finally find your waist.",
+    "And honestly, I won't be able to hide how badly I've been waiting for that moment."
+  ],
+
+  // Reference Section 4 ("Stay with Me... ♡") progressive 3-beat confession
+  stayWithMeReplies: [
+    "“Beat I: I've only seen you through pictures, yet you already have this kind of hold over my thoughts every night.”",
+    "“Beat II: I keep imagining how your voice will sound in the dark when my hands finally slide around your waist for the first time.”",
+    "“Beat III: When we finally test this chemistry in person, I'm not holding a single thing back. Keep scrolling—let me show you what I'm picturing next.”"
+  ],
+
+  // Reference Section 5 ("I'm Thinking About You... ♡") 3 Neon Circle Tabs
+  thinkingFantasies: {
+    lips: "Finally finding out how soft your lips are—tracing your bottom lip with my thumb before kissing you slow, deep, and hard enough to steal your breath.",
+    touch: "Discovering what your touch actually feels like when your nails dig into my shoulders and my hands pull you flush against me for the very first time.",
+    body: "Seeing you standing right in front of me instead of through a screen—dressed or undressed—and learning every curve until you're arching into my hands."
   },
 
-  // 2. Stage 2: The Joyce Allegations (Eyes Card with atmospheric eyes.jpeg backdrop)
+  // Stage 2: Personal Confessions for Jay + Lockbox
   allegations: [
     {
       id: "eyes",
       emoji: "👁️",
-      title: "Those eyes, though...",
+      title: "Those eyes and that smile in every photo.",
       hasEyesBackdrop: true,
       message:
-        "I've told you before, baby girl, there's something dangerous about your eyes. There's this particular picture of yours where I genuinely get lost staring at them—thinking thoughts that would make you blush right through the screen. And before you get too confident, no, I'm not taking it back.",
-      followUpButton: "You're staring again, aren't you?",
+        "I've only seen you through the pictures you've shared, but your eyes and that smile capture my attention every single time. One look at the way you stare into the camera and my mind goes straight to how those eyes will look staring up at me in person when we're finally alone.",
+      followUpButton: "Tell me what else you're imagining...",
       followUpReply:
-        "What can I say, pretty girl? When you look like that, looking away isn't even on my list of options."
+        "That first moment the shyness fades, my hands tangle in your hair, and I hear the very first soft gasp leave your lips."
     },
     {
       id: "attitude",
       emoji: "👑",
-      title: "The attitude problem.",
+      title: "Dressed or undressed—you ruin my focus.",
       message:
-        "Don't give me that attitude, pretty girl. 90% eye-rolls, 10% bratty backtalk, and 100% begging to be put in your place. You love acting tough and unbothered, Joyce, as if we both don't know how quickly you fold the second I take control."
+        "It doesn't matter whether you're fully dressed or showing off just enough to tease me—you are ridiculously attractive. You love acting bold while there's a screen between us, and it makes me wonder how long that composure will last once you're actually standing right in front of me.",
+      followUpButton: "Think our chemistry will be that intense?",
+      followUpReply:
+        "Intense doesn't even cover it. The second my hands finally find your waist in person, all this built-up tension is going to catch fire."
     },
     {
       id: "attractive",
       emoji: "🔥",
-      title: "The dangerously attractive human.",
+      title: "Anticipating your voice, your touch, your moans.",
       message:
-        "Behave yourself. Or at least pretend to. It's actually criminal how good you look while causing this much trouble. Between that body, that wicked mouth, and the way you tease me late at night, keeping my hands to myself would be a lost cause if I were in the same room."
+        "Containing my desire for you is getting harder by the day. I'm curious about everything—how warm your skin feels, how your kisses taste, how your voice sounds up close, and especially how you sound when you lose control and moan for me for the first time.",
+      followUpButton: "Don't hold back now...",
+      followUpReply:
+        "Trust me—when the day finally comes that I have you beside me, 'holding back' won't even be in my vocabulary."
     }
   ],
 
-  cheekyObservations: [
-    "Look at you, being all shy now. We both know you're smiling at your phone, baby girl.",
-    "Behave yourself, Joyce. Or at least pretend to for five minutes.",
-    "Come on, baby. You know better than to test my patience when you look that good.",
-    "That bratty little smirk of yours? Yeah, it's going to get you into very fun trouble one of these nights, babes."
-  ],
+  // Stage 3: Progressive 3-Chapter Story over her actual portrait (assets/jay.jpeg)
+  distanceChapters: {
+    1: {
+      quote:
+        "“I've stared at your pictures a hundred times, but seeing you standing right in front of me is going to hit completely different.”",
+      narrative:
+        "Scene I — First Sight: The moment I finally see you in person, I don't think I'll be able to hide how badly I've been looking forward to it. Taking in your eyes, that smile, and your body up close before closing the last inch of space between us.",
+      nextLabel: "Next Scene: The First Touch ♡"
+    },
+    2: {
+      quote:
+        "“No more screens. No more having to imagine what your skin feels like under my hands.”",
+      narrative:
+        "Scene II — First Touch: Sliding my palms along your waist for the very first time, pulling you flush against my chest, and finally discovering how your lips taste when you open up for me.",
+      nextLabel: "Next Scene: Hearing You Let Go ♡"
+    },
+    3: {
+      quote:
+        "“Every fantasy we've built from a distance finally turning into reality in the dark.”",
+      narrative:
+        "Scene III — First Night: Discovering our chemistry skin-to-skin—learning every spot on your neck and body that makes you shiver until I finally hear the moans I've been anticipating for so long.",
+      nextLabel: "Replay From Scene I ↺"
+    }
+  },
 
-  horrorReplies: [
-    "Survival Odds: 0%. I saw you in the dark hallway, pretty girl, and locked the door behind us myself.",
-    "Plot twist: The ghost left the haunted house because the tension between us got way too heated.",
-    "If you're the villain in this horror movie, babes, I'm pinning you against the wall in scene one.",
-    "Red flags? Come on, baby. In this lighting, they just look like an invitation."
-  ],
+  // Stage 5: "Pick Your Temptation" 3-Card Interactive Experience
+  temptations: {
+    slow: {
+      kicker: "✦ Option I • Slow & Teasing ✦",
+      title: "Savoring Our Very First Moment",
+      lead:
+        "When I finally have you beside me, I don't rush a single second. I start by taking in every detail I've only seen in pictures—my fingertips slowly tracing your jawline, collarbone, and waist while I watch your breath catch in the candlelight.",
+      escalated:
+        "I want to see the goosebumps rise on your skin for the first time, brushing my lips right below your ear until you're squirming, holding onto my shoulders, and begging me to stop teasing.",
+      buttonLabel: "Turn Up The Heat... ♡"
+    },
+    close: {
+      kicker: "✦ Option II • Close & Intimate ✦",
+      title: "Finally Skin Against Skin",
+      lead:
+        "Closing every inch of distance that used to keep us apart. I pull you flush against my chest so we can finally feel each other's heat for real, tasting your lips in a slow, deep kiss we've both been waiting for.",
+      escalated:
+        "Whether you start out dressed to tease me or we lose the clothes right away, my hands are learning every curve of your body until our chemistry takes over completely.",
+      buttonLabel: "Pull Me Even Closer... ♡"
+    },
+    surprise: {
+      kicker: "✦ Option III • Surprise Me ✦",
+      title: "Unleashing Everything I've Imagined",
+      lead:
+        "My favorite choice. You step inside, hand over control completely, and let me decide the pace. I've spent way too many nights imagining what I'd do the day I finally had you within reach...",
+      escalated:
+        "...and I won't stop until I've heard every soft gasp and helpless moan I've been anticipating—proving in person that the chemistry between us is ten times hotter than anything we imagined.",
+      buttonLabel: "Unleash The Full Fantasy... ♡"
+    }
+  },
 
-  // Stage 5: A Little Game (4-word mobile crossword)
-  crossword: {
-    rewardMessage:
-      "That's my good girl. Look at you solving all four. Your reward is knowing you're still my favourite little menace, Joyce.",
-    entries: [
-      {
-        number: 1,
-        answer: "CHOCOLATE",
-        clue: "Something sweet that can improve almost any day. It comes in bars, boxes and many flavours."
-      },
-      {
-        number: 2,
-        answer: "ANIME",
-        clue: "Japanese animation. Think of your favourite characters and shows."
-      },
-      {
-        number: 3,
-        answer: "CAKE",
-        clue: "Something sweet you love eating on birthdays and probably on ordinary days too."
-      },
-      {
-        number: 4,
-        answer: "BASKETBALL",
-        clue: "Your favourite sport involving a ball, a hoop and a lot of running."
-      }
+  // Stage 6: Deep Desire & Intimate Connection (6 Paragraphs)
+  heartfeltMessage: {
+    paragraphs: [
+      "I've only seen you through pictures, Jay, but somehow you've managed to get completely into my head. Every photo you share—your eyes, that smile, the way you look at the camera—captures my attention in a way I can't shake.",
+      "I catch myself imagining what it would feel like to finally stand right beside you. I'm curious about everything: how warm your skin feels, how your kisses taste, and the exact sound of your voice when it's right next to my ear instead of through a phone.",
+      "And I won't pretend my thoughts are innocent. Whether you're fully dressed or undressed, I find you impossibly attractive—and containing my desire for you is becoming harder every single day.",
+      "I keep picturing the moment we finally discover our chemistry in person. I want to watch your composure slip, feel you shiver under my hands for the first time, and hear you moan when we're finally together in the dark.",
+      "At the same time, I love that even before meeting face to face, you can be completely unfiltered with me—playful, bratty, sketching late at night, or vulnerable after a long day, knowing I'm right here paying attention to every detail of who you are.",
+      "I've seen you. You've captivated me. I keep imagining you. And honestly, I don't think I'll be able to hide how badly I've been looking forward to the day I finally experience you in person."
+    ],
+    endingPunchline:
+      "Now take a slow breath, uncross your legs, and try not to think too hard about what happens the day we're finally in the same room."
+  },
+
+  // Stage 7: 4-Mood After-Hours Dial ("What Do You Need Tonight?")
+  nightMoodMessages: {
+    desired: [
+      "Close your eyes for five seconds and imagine what it's going to feel like the first time my hands slide up your waist and pull you flush against me.",
+      "Your eyes, that smile, and the pictures you share... you have absolutely no idea how effortlessly you ruin my self-control.",
+      "Whether dressed or undressed, you look like pure temptation—and I can't wait to see how you react when I'm finally looking at you in person."
+    ],
+    heavy: [
+      "Come here. Even before I can hold you in person, you don't have to pretend you're okay tonight—let me be the voice that helps you unwind.",
+      "Take a slow breath and drop your shoulders. I can't wait for the day I can just pull you against my chest after a rough day and hold you close.",
+      "Whatever weighed on you today doesn't stand a chance. You've got me in your corner tonight."
+    ],
+    sleepless: [
+      "3 AM and your mind won't stay quiet? Text me right now—I'd rather stay up imagining you beside me than sleep anyway.",
+      "I keep picturing what 3 AM is going to look like when we finally share the same bed and you're resting against my shoulder.",
+      "Or if you don't want to sleep... I can think of a much more exhausting way we're going to pass the night once we're finally together."
+    ],
+    miss: [
+      "I haven't even touched you yet and I already crave your skin like an addiction. The day we finally meet, I'm not letting go until morning.",
+      "Every day we spend waiting is only making our first kiss, our first touch, and our first night together ten times more intense.",
+      "Send me a text tonight and tell me what you're most curious to feel the moment you're finally standing right in front of me."
     ]
   },
 
-  // Stage 6: The Message I Actually Wanted You to Read
-  heartfeltMessage: {
-    paragraphs: [
-      "Listen to me,love. Pause the teasing for a minute. I know you're usually the one making people laugh and acting strong, but even on your terrible days, you still have me right here.",
-      "Come here, baby girl. You don't need to explain everything right now. You don't owe me an act, big explanations, or vulnerability on command—I care about you because you're my homie and because you matter to me.",
-      "I know you cry sometimes, and I wish I could be there beside you on those nights. Listen, you don't have to hide those tears from me. Not to force you to talk or try to fix everything. Just to hold your hand, pull you close, let you cry if you need to, and remind you that you don't have to face everything alone.",
-      "Let it out. You don't have to pretend you're okay just because everyone expects you to be. And if you can't find the words, that's fine. I'll still be here.",
-      "I'm here when you're happy, and I'm here when you're struggling. You can call, text, vent, cry, sit in silence, send a random message at 3 AM, or let me distract you with the most ridiculous nonsense imaginable.",
-      "I can't always be physically beside you, but don't mistake distance for absence. You've got me in your corner, trouble. Always."
-    ],
-    endingPunchline: "Now wipe that face and go eat something, baby girl. That's an order."
-  },
-
-  // Stage 7: Your Emergency Button ("Having one of those days?")
-  emergencyMessages: [
-    "I said take a breath. That's an order, trouble. Unclench your jaw and drop your shoulders for me.",
-    "Come here. You don't have to solve your entire life tonight. Just rest.",
-    "You heard me, baby girl—you're allowed to have days when you do absolutely nothing and let someone else look out for you.",
-    "Want to cry or vent? I'm listening. Want distraction? Come here, babes, I'm very available to take your mind off things.",
-    "Don't mistake distance for absence. One random text from you and I'm right there in your corner.",
-    "Even on your worst days, love, you're still worthy of kindness and someone who stays.",
-    "Deep breath for me, baby. That's a good girl. You're not carrying tonight alone."
-  ],
-
-  // Stage 8: The Final Little Surprise
+  // Stage 8: The Final Intimate Confession
   finalLetter: {
     paragraphs: [
-      "One last thing, baby girl.",
-      "I hope life gives you more reasons to smile than reasons to overthink.",
-      "I hope you always remember that with me, you never have to pretend to be anyone other than yourself—bratty attitude, soft heart, and all.",
-      "Keep drawing. Keep playing. Keep laughing at stupid things. Keep being the dangerously pretty, wonderfully weird trouble you are.",
-      "And whenever things get a little too heavy, remember that somewhere in this world there's an idiot who is always ready to hear from you.",
-      "No conditions. No pressure. You've got me in your corner, babes.",
-      "P.S. Behave yourself tonight. Or don't—we both know which one I prefer. 😏"
+      "One last confession before I let you go.",
+      "I've only known you through photographs, your eyes, your smile, and the pictures you've shared—yet somehow you've completely captured my attention.",
+      "I want this page to linger in the back of your mind today. When you catch yourself smiling, blushing, or feeling a sudden rush of heat, remember that I am desperately looking forward to finally having you close to me.",
+      "I can't wait to discover what your touch feels like, how your kisses taste, how your voice sounds up close, and how you sound when you finally moan my name in the dark.",
+      "Keep sketching. Keep smiling at the camera the way you do. Keep being the irresistible temptation that makes containing my desire harder every single day.",
+      "And when the moment finally comes that we're standing face to face? Don't expect me to hide how badly I've wanted you.",
+      "P.S. Text me when you finish reading this, Jay. Tell me what you're imagining we'll do first when we finally meet in person. 😏"
     ],
     credits:
-      "Made with genuine care, a little teasing and an unreasonable amount of coding."
+      "Made with genuine care, shameless desire, and an unreasonable amount of coding."
   },
 
   // Playful status toasts during the Cinematic Final Scene
   cinematicToasts: [
-    "🍫 Chocolate delivery incoming for baby girl...",
-    "✨ Joyce.exe has stopped functioning because of excessive sweetness.",
-    "💗 Now whose a good girl?",
-    "🌙 Warning: Trouble levels off the charts."
+    "✨ Midnight desire & starlight deployed for Jay...",
+    "🔥 Warning: Anticipation levels off the charts.",
+    "💗 Counting down until I finally have you close.",
+    "🍫 Tap below if you want the secret chocolate delivery!"
   ]
 };
 
@@ -141,20 +235,35 @@ const JOYCE_DATA = {
    APPLICATION STATE
    ========================================================================== */
 const STATE = {
-  headphoneClicks: 0,
+  introStep: 0,
   gateUnlocked: false,
   musicPlaying: false,
-  usingSynthFallback: false,
-  audioCtx: null,
-  synthTimer: null,
+  playlistStarted: false,
+  playlistFinished: false,
+  playlistIndex: 0,
+  userHasInteracted: false,
+  userManuallyPaused: false,
+  isPrimingAudio: false,
+  playerPrimed: false,
+  isMuted: false,
+  targetVolume: 75,
+  ytPlayer: null,
+  ytReady: false,
+  loadedVideoId: null,
+  ytFallbackIndices: { 0: 0, 1: 0, 2: 0 },
+  playbackWatchdogTimer: null,
+  volumeFadeTimer: null,
+  craveWhisperIdx: 0,
+  stayReplyIdx: 0,
   openedAllegations: new Set(),
-  cheekyIdx: 0,
-  horrorIdx: 0,
+  distanceChapter: 1,
   eyesRevealStep: 1,
+  activeTemptation: null,
+  exploredTemptations: new Set(),
   revealedParagraphs: 1,
-  lastEmergencyIndex: -1,
+  activeNightMood: "desired",
+  nightMoodIndices: { desired: 0, heavy: 0, sleepless: 0, miss: 0 },
   emergencyTapCount: 0,
-  crosswordInputs: {},
   cinematicTimers: [],
   cinematicToastInterval: null,
   cinematicBlackoutTimer: null,
@@ -167,20 +276,132 @@ const STATE = {
    ========================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   initAssetExtensionFallbacks();
-  initStrictHeadphoneGate();
+  initSeductiveChestOpeningGate();
   initAudioControls();
+  initReferencePosterInteractions();
   initStage2Allegations();
-  initStage3HorrorPortrait();
+  initStage3DistanceStory();
   initStage4EyesMoment();
-  initStage5Crossword();
+  initStage5PickYourTemptation();
   initStage6Heartfelt();
-  initStage7Emergency();
+  initStage7NightMoodDial();
   initStage8FinalSurprise();
   initCinematicEndingSequence();
   initScrollStageTracker();
   initStarsCanvas();
   initForegroundSparklesOverlay();
 });
+
+/* ==========================================================================
+   REFERENCE POSTER INTERACTIONS
+   ========================================================================== */
+function initReferencePosterInteractions() {
+  // 1. Section 2 ("I Crave You"): Tilted Polaroid tap cycles whispers
+  const polaroidCard = document.getElementById("crave-polaroid-card");
+  const craveWhisperEl = document.getElementById("crave-dynamic-whisper");
+  if (polaroidCard && craveWhisperEl) {
+    const cycleCrave = () => {
+      STATE.craveWhisperIdx =
+        (STATE.craveWhisperIdx + 1) % JAY_DATA.craveWhispers.length;
+      craveWhisperEl.style.opacity = "0";
+      setTimeout(() => {
+        craveWhisperEl.textContent =
+          JAY_DATA.craveWhispers[STATE.craveWhisperIdx];
+        craveWhisperEl.style.opacity = "1";
+      }, 150);
+      burstStars(14);
+    };
+    polaroidCard.addEventListener("click", cycleCrave);
+    polaroidCard.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        cycleCrave();
+      }
+    });
+  }
+
+  // 2. Section 3 ("What I Love About You"): Checklist items reveal intimate whisper
+  const checkItems = document.querySelectorAll(".neon-check-item");
+  const loveWhisperBox = document.getElementById("love-whisper-box");
+  checkItems.forEach((item) => {
+    const activateItem = () => {
+      checkItems.forEach((i) => i.classList.remove("active"));
+      item.classList.add("active");
+      const whisper = item.getAttribute("data-whisper");
+      if (loveWhisperBox && whisper) {
+        loveWhisperBox.textContent = `“${whisper}”`;
+      }
+      burstStars(10);
+    };
+    item.addEventListener("click", activateItem);
+    item.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        activateItem();
+      }
+    });
+  });
+
+  // 3. Section 4 ("I Can't Resist You"): Progressive 3-Beat Confession
+  const stayBtn = document.getElementById("stay-with-me-btn");
+  const resistReply = document.getElementById("resist-secret-reply");
+  if (stayBtn && resistReply) {
+    stayBtn.addEventListener("click", () => {
+      resistReply.removeAttribute("hidden");
+      const idx = STATE.stayReplyIdx % JAY_DATA.stayWithMeReplies.length;
+      resistReply.textContent = JAY_DATA.stayWithMeReplies[idx];
+      STATE.stayReplyIdx++;
+      stayBtn.innerHTML =
+        idx < 2
+          ? `<span>Keep Holding On... (${idx + 1} / 3)</span><span class="btn-heart" aria-hidden="true">♡</span>`
+          : `<span>Feel The Full Pull</span><span class="btn-heart" aria-hidden="true">♡</span>`;
+      burstStars(18);
+    });
+  }
+
+  // 4. Section 5 ("I'm Thinking About You"): 3 Circular Neon Icon Tabs
+  const circleTabs = document.querySelectorAll(".neon-circle-tab");
+  const thinkingCopy = document.getElementById("thinking-dynamic-copy");
+  const comeCloserBtn = document.getElementById("come-closer-btn");
+
+  circleTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      circleTabs.forEach((t) => {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
+      tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
+      const key = tab.getAttribute("data-fantasy");
+      if (thinkingCopy && key && JAY_DATA.thinkingFantasies[key]) {
+        thinkingCopy.textContent = JAY_DATA.thinkingFantasies[key];
+      }
+      burstStars(14);
+    });
+  });
+
+  if (comeCloserBtn) {
+    comeCloserBtn.addEventListener("click", () => {
+      const truthSection = document.getElementById("section-truth");
+      if (truthSection) {
+        burstStars(20);
+        truthSection.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+
+  // 5. Section 6 ("The Truth is..."): "Let's Make It Real ♡" scrolls to Stage 2
+  const makeItRealBtn = document.getElementById("make-it-real-btn");
+  if (makeItRealBtn) {
+    makeItRealBtn.addEventListener("click", () => {
+      burstStars(32);
+      const vaultStart = document.getElementById("stage-2");
+      if (vaultStart) {
+        vaultStart.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+}
 
 /* ==========================================================================
    DYNAMIC IMAGE EXTENSION FALLBACK FOR assets/eyes
@@ -204,18 +425,38 @@ function initAssetExtensionFallbacks() {
 }
 
 /* ==========================================================================
-   1. STRICT 3-CLICK HEADPHONE GATE
+   1. FULL-SCREEN IMMERSIVE TORSO TOUCH & DOWNWARD SWIPE OPENING EXPERIENCE
+   - No cards, no borders, no skip button, no automatic advance.
+   - First touch (Step 0 -> Step 1):
+     Detects her touch, zooms the torso slightly closer towards the viewer,
+     intensifies crimson lighting, and displays:
+     "Already curious? Come a little closer..."
+   - Second interaction (Step 1 -> Complete):
+     Requires a genuine downward swipe gesture on a subsequent touch,
+     makes the torso image respond naturally to her finger movement,
+     gradually fades out the image and transitions into the main website,
+     and starts Track 1 (Wicked Games – The Weeknd).
    ========================================================================== */
-function initStrictHeadphoneGate() {
+function initSeductiveChestOpeningGate() {
   const gateEl = document.getElementById("headphone-gate");
-  const actionBtn = document.getElementById("hp-action-btn");
-  const btnLabel = document.getElementById("hp-btn-label");
+  const overlayEl = document.getElementById("chest-gate-card");
+  const touchZone = document.getElementById("chest-touch-zone");
+  const torsoImg = document.getElementById("chest-torso-img");
+  const rippleEl = document.getElementById("chest-touch-ripple");
+  const swipeFill = document.getElementById("chest-swipe-fill");
   const primaryText = document.getElementById("hp-primary-text");
-  const dot2 = document.getElementById("hp-dot-2");
-  const dot3 = document.getElementById("hp-dot-3");
+  const instructionText = document.getElementById("chest-instruction-text");
 
-  if (!gateEl || !actionBtn || !btnLabel || !primaryText) return;
+  if (!gateEl || !touchZone) return;
 
+  let isPointerDown = false;
+  let gestureMode = "none"; // "first-touch" | "second-swipe"
+  let startX = 0;
+  let startY = 0;
+  let currentDeltaY = 0;
+  let maxHorizontalDrift = 0;
+
+  // Prevent accidental page scrolling while the opening experience is active
   const blockScrollWhileLocked = (e) => {
     if (!STATE.gateUnlocked) {
       e.preventDefault();
@@ -226,195 +467,850 @@ function initStrictHeadphoneGate() {
   });
   gateEl.addEventListener("wheel", blockScrollWhileLocked, { passive: false });
 
-  actionBtn.addEventListener("click", () => {
-    STATE.headphoneClicks++;
+  // Complete the opening after a genuine downward swipe in Step 1
+  const completeChestOpening = () => {
+    if (STATE.gateUnlocked) return;
+    STATE.gateUnlocked = true;
+    touchZone.classList.remove("is-swiping");
 
-    if (STATE.headphoneClicks === 1) {
-      if (dot2) dot2.classList.add("active");
+    if (swipeFill) swipeFill.style.height = "100%";
+
+    // Unlock document & controller opacity immediately so the YouTube IFrame is unthrottled
+    document.documentElement.classList.remove("gate-locked");
+    document.body.classList.remove("gate-locked");
+
+    // Start the first YouTube song (Wicked Games – The Weeknd) following this intentional interaction
+    STATE.userHasInteracted = true;
+    startSequentialPlaylist();
+    burstStars(42);
+
+    if (torsoImg) {
+      torsoImg.style.transition =
+        "transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.85s ease";
+      torsoImg.style.transform = "scale(1.24) translateY(28px)";
+      torsoImg.style.opacity = "0";
+    }
+    if (overlayEl) {
+      overlayEl.style.transition = "opacity 0.65s ease, transform 0.65s ease";
+      overlayEl.style.opacity = "0";
+      overlayEl.style.transform = "translateY(16px)";
+    }
+
+    setTimeout(() => {
+      gateEl.classList.add("gate-fade-out");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 680);
+  };
+
+  // Trigger First Touch (Step 0 -> Step 1): Zoom torso closer + lighting + teasing message
+  const triggerFirstTouchResponse = (clientX, clientY) => {
+    if (STATE.introStep >= 1) return;
+    STATE.introStep = 1;
+
+    // Silently unlock/prime the YouTube IFrame audio context during this discrete first tap
+    // so that when she finishes the second downward swipe, mobile & desktop autoplay policies allow audio.
+    primeYouTubePlayerOnFirstTouch();
+
+    if (rippleEl && typeof clientX === "number" && typeof clientY === "number") {
+      const rect = touchZone.getBoundingClientRect();
+      const relX = Math.max(24, Math.min(rect.width - 24, clientX - rect.left));
+      const relY = Math.max(24, Math.min(rect.height - 24, clientY - rect.top));
+      rippleEl.style.left = `${relX}px`;
+      rippleEl.style.top = `${relY}px`;
+      rippleEl.classList.remove("ripple-active");
+      void rippleEl.offsetWidth;
+      rippleEl.classList.add("ripple-active");
+    }
+
+    touchZone.classList.add("chest-touched");
+
+    if (primaryText) {
       primaryText.style.opacity = "0";
       setTimeout(() => {
         primaryText.textContent =
-          "You heard me, baby girl. Go get your headphones, woman. You're not listening to this through your phone speaker.";
+          "Already curious? Come a little closer...";
         primaryText.style.opacity = "1";
-      }, 150);
-      btnLabel.textContent = "Okay, okay... I'm going";
-      burstStars(14);
-    } else if (STATE.headphoneClicks === 2) {
-      if (dot3) dot3.classList.add("active");
-      primaryText.style.opacity = "0";
-      setTimeout(() => {
-        primaryText.textContent =
-          "I KNOW you haven't moved. Don't give me that attitude, pretty girl. Be a good girl for daddy and put those headphones on. I'll wait. 😂";
-        primaryText.style.opacity = "1";
-      }, 150);
-      btnLabel.textContent = "I actually have them now, damn.";
-      burstStars(18);
-    } else if (STATE.headphoneClicks === 3) {
-      actionBtn.disabled = true;
-      primaryText.style.opacity = "0";
-      setTimeout(() => {
-        primaryText.textContent =
-          "That's my good girl. I knew you'd listen eventually. Put them on, get comfortable and let's go.";
-        primaryText.style.opacity = "1";
-      }, 140);
-      btnLabel.textContent = "Starting soundtrack...";
+      }, 160);
+    }
 
-      startBackgroundMusic();
-      burstStars(42);
+    if (instructionText) {
+      instructionText.removeAttribute("hidden");
+      instructionText.textContent =
+        "Now slowly slide your finger down...";
+    }
 
-      setTimeout(() => {
-        STATE.gateUnlocked = true;
-        document.documentElement.classList.remove("gate-locked");
-        document.body.classList.remove("gate-locked");
-        gateEl.classList.add("gate-fade-out");
+    burstStars(18);
+  };
 
-        const stage2 = document.getElementById("stage-2");
-        if (stage2) {
-          stage2.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 1650);
+  // Real-time natural torso response as she slides her finger down in Step 1
+  const updateSwipeVisualProgress = (deltaY) => {
+    const clampedDelta = Math.max(0, deltaY);
+    const swipeThreshold = 120;
+    const progress = Math.min(1, clampedDelta / swipeThreshold);
+
+    if (swipeFill) {
+      swipeFill.style.height = `${Math.round(progress * 100)}%`;
+    }
+    if (torsoImg) {
+      const dynamicScale = 1.14 + progress * 0.09;
+      const dynamicShiftY = progress * 24;
+      const dynamicOpacity = 1 - progress * 0.55;
+      torsoImg.style.transform = `scale(${dynamicScale.toFixed(3)}) translateY(${dynamicShiftY.toFixed(1)}px)`;
+      torsoImg.style.opacity = String(dynamicOpacity.toFixed(3));
+    }
+    if (overlayEl) {
+      overlayEl.style.opacity = String((1 - progress * 0.7).toFixed(3));
+      overlayEl.style.transform = `translateY(${(progress * 12).toFixed(1)}px)`;
+    }
+  };
+
+  const resetIncompleteSwipe = () => {
+    if (STATE.gateUnlocked) return;
+    touchZone.classList.remove("is-swiping");
+    if (swipeFill) swipeFill.style.height = "0%";
+    if (torsoImg) {
+      torsoImg.style.transform = "";
+      torsoImg.style.opacity = "1";
+    }
+    if (overlayEl) {
+      overlayEl.style.opacity = "1";
+      overlayEl.style.transform = "translateY(0)";
+    }
+  };
+
+  const onGestureStart = (clientX, clientY) => {
+    if (STATE.gateUnlocked) return;
+    isPointerDown = true;
+    startX = clientX;
+    startY = clientY;
+    currentDeltaY = 0;
+    maxHorizontalDrift = 0;
+
+    if (STATE.introStep === 0) {
+      // First interaction is a touch; must release before the second downward swipe gesture begins
+      gestureMode = "first-touch";
+      triggerFirstTouchResponse(clientX, clientY);
+    } else {
+      // Second interaction: ready to detect a genuine downward swipe
+      gestureMode = "second-swipe";
+      touchZone.classList.add("is-swiping");
+    }
+  };
+
+  const onGestureMove = (clientX, clientY) => {
+    if (!isPointerDown || STATE.gateUnlocked) return;
+    if (gestureMode !== "second-swipe") return;
+
+    const deltaX = Math.abs(clientX - startX);
+    const deltaY = clientY - startY;
+    if (deltaX > maxHorizontalDrift) {
+      maxHorizontalDrift = deltaX;
+    }
+    currentDeltaY = deltaY;
+
+    // Only respond to downward movement (not upward or predominantly horizontal)
+    if (deltaY > 6 && deltaY > deltaX * 1.15) {
+      updateSwipeVisualProgress(deltaY);
+    }
+  };
+
+  const onGestureEnd = () => {
+    if (!isPointerDown || STATE.gateUnlocked) return;
+    isPointerDown = false;
+
+    if (gestureMode === "second-swipe") {
+      const isGenuineDownwardSwipe =
+        currentDeltaY >= 75 && currentDeltaY > maxHorizontalDrift * 1.2;
+
+      if (isGenuineDownwardSwipe) {
+        completeChestOpening();
+      } else {
+        resetIncompleteSwipe();
+      }
+    }
+
+    gestureMode = "none";
+  };
+
+  // Mobile Touch Listeners
+  touchZone.addEventListener(
+    "touchstart",
+    (e) => {
+      if (!e.touches.length) return;
+      const t = e.touches[0];
+      onGestureStart(t.clientX, t.clientY);
+    },
+    { passive: true }
+  );
+
+  touchZone.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!e.touches.length) return;
+      const t = e.touches[0];
+      onGestureMove(t.clientX, t.clientY);
+    },
+    { passive: true }
+  );
+
+  touchZone.addEventListener("touchend", onGestureEnd);
+  touchZone.addEventListener("touchcancel", onGestureEnd);
+
+  // Desktop Pointer / Mouse Listeners
+  touchZone.addEventListener("mousedown", (e) => {
+    onGestureStart(e.clientX, e.clientY);
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (isPointerDown) {
+      onGestureMove(e.clientX, e.clientY);
+    }
+  });
+
+  window.addEventListener("mouseup", () => {
+    if (isPointerDown) {
+      onGestureEnd();
     }
   });
 }
 
 /* ==========================================================================
-   PERSISTENT AUDIO CONTROLLER
+   OFFICIAL YOUTUBE IFRAME PLAYER API — SEQUENTIAL 3-SONG PLAYLIST
+   Playlist (plays sequentially 1 -> 2 -> 3, independent of scrolling):
+   1. Wicked Games – The Weeknd
+   2. Earned It – The Weeknd
+   3. Adorn – Miguel
+   Stops playback after the 3rd song finishes.
    ========================================================================== */
 function initAudioControls() {
-  const pillBtn = document.getElementById("music-control-btn");
-  if (!pillBtn) return;
+  const topPillBtn = document.getElementById("music-control-btn");
+  const playPauseBtn = document.getElementById("yt-play-pause-btn");
+  const muteBtn = document.getElementById("yt-mute-btn");
+  const volumeSlider = document.getElementById("yt-volume-slider");
+  const drawerToggleBtn = document.getElementById("yt-drawer-toggle-btn");
+  const drawerCloseBtn = document.getElementById("yt-drawer-close-btn");
+  const drawerEl = document.getElementById("yt-player-drawer");
+  const statusActionBtn = document.getElementById("yt-status-action-btn");
 
-  pillBtn.addEventListener("click", () => {
+  // Load official YouTube IFrame API script if not already loaded
+  if (typeof window.YT === "undefined" || typeof window.YT.Player === "undefined") {
+    const existingScript = document.querySelector(
+      'script[src*="youtube.com/iframe_api"]'
+    );
+    if (!existingScript) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      tag.async = true;
+      document.head.appendChild(tag);
+    }
+  } else {
+    createYouTubePlayerInstance();
+  }
+
+  const togglePlayPause = () => {
+    STATE.userHasInteracted = true;
+    hideYouTubeStatusBanner();
     if (STATE.musicPlaying) {
+      STATE.userManuallyPaused = true;
       pauseBackgroundMusic();
     } else {
-      startBackgroundMusic();
+      STATE.userManuallyPaused = false;
+      if (STATE.playlistFinished) {
+        // If she presses play after all 3 songs finished, restart playlist from song 1
+        STATE.playlistFinished = false;
+        playPlaylistTrackAtIndex(0);
+      } else {
+        startBackgroundMusic();
+      }
+    }
+  };
+
+  if (topPillBtn) {
+    topPillBtn.addEventListener("click", togglePlayPause);
+  }
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener("click", togglePlayPause);
+  }
+  if (statusActionBtn) {
+    statusActionBtn.addEventListener("click", () => {
+      STATE.userHasInteracted = true;
+      STATE.userManuallyPaused = false;
+      hideYouTubeStatusBanner();
+      playPlaylistTrackAtIndex(STATE.playlistIndex, true);
+    });
+  }
+
+  if (muteBtn) {
+    muteBtn.addEventListener("click", () => {
+      STATE.userHasInteracted = true;
+      toggleMuteMusic();
+    });
+  }
+
+  if (volumeSlider) {
+    volumeSlider.addEventListener("input", (e) => {
+      STATE.userHasInteracted = true;
+      const val = Number(e.target.value);
+      setMusicVolume(val);
+    });
+  }
+
+  const setDrawerOpen = (isOpen) => {
+    if (!drawerEl || !drawerToggleBtn) return;
+    drawerEl.classList.toggle("drawer-open", isOpen);
+    drawerEl.setAttribute("aria-hidden", String(!isOpen));
+    drawerToggleBtn.classList.toggle("drawer-active", isOpen);
+    drawerToggleBtn.setAttribute("aria-expanded", String(isOpen));
+  };
+
+  if (drawerToggleBtn && drawerEl) {
+    drawerToggleBtn.addEventListener("click", () => {
+      const isOpen = !drawerEl.classList.contains("drawer-open");
+      setDrawerOpen(isOpen);
+    });
+  }
+
+  if (drawerCloseBtn) {
+    drawerCloseBtn.addEventListener("click", () => setDrawerOpen(false));
+  }
+
+  updateTrackMetadataUI(STATE.playlistIndex);
+}
+
+function showYouTubeStatusBanner(message, showPlayButton = false) {
+  const banner = document.getElementById("yt-status-banner");
+  const textEl = document.getElementById("yt-status-text");
+  const actionBtn = document.getElementById("yt-status-action-btn");
+  if (!banner || !textEl) return;
+
+  textEl.textContent = message;
+  banner.removeAttribute("hidden");
+  if (actionBtn) {
+    if (showPlayButton) {
+      actionBtn.removeAttribute("hidden");
+    } else {
+      actionBtn.setAttribute("hidden", "");
+    }
+  }
+}
+
+function hideYouTubeStatusBanner() {
+  const banner = document.getElementById("yt-status-banner");
+  if (banner) {
+    banner.setAttribute("hidden", "");
+  }
+}
+
+// Global callback invoked automatically by https://www.youtube.com/iframe_api
+window.onYouTubeIframeAPIReady = function () {
+  createYouTubePlayerInstance();
+};
+
+function createYouTubePlayerInstance() {
+  if (STATE.ytPlayer || typeof window.YT === "undefined" || !window.YT.Player) {
+    return;
+  }
+  const container = document.getElementById("yt-iframe-player");
+  if (!container) return;
+
+  const firstVideoId = getActiveVideoIdForIndex(0);
+  STATE.loadedVideoId = firstVideoId;
+
+  // Never include origin: undefined in playerVars (which serializes as "&origin=undefined" and breaks postMessage on file://)
+  const playerVars = {
+    autoplay: 0,
+    controls: 1,
+    disablekb: 1,
+    fs: 0,
+    iv_load_policy: 3,
+    modestbranding: 1,
+    playsinline: 1,
+    rel: 0
+  };
+  if (
+    window.location &&
+    (window.location.protocol === "http:" || window.location.protocol === "https:") &&
+    window.location.origin &&
+    window.location.origin !== "null"
+  ) {
+    playerVars.origin = window.location.origin;
+  }
+
+  STATE.ytPlayer = new window.YT.Player("yt-iframe-player", {
+    width: "200",
+    height: "200",
+    videoId: firstVideoId,
+    playerVars,
+    events: {
+      onReady: onYouTubePlayerReady,
+      onStateChange: onYouTubePlayerStateChange,
+      onError: onYouTubePlayerError
     }
   });
 }
 
-async function startBackgroundMusic() {
-  const audioEl = document.getElementById("bg-song-player");
-  if (!audioEl) return;
-
-  if (STATE.musicPlaying && !audioEl.paused) {
-    updateMusicUI(true);
-    return;
+function onYouTubePlayerReady(event) {
+  STATE.ytReady = true;
+  try {
+    event.target.setVolume(STATE.targetVolume);
+    if (STATE.isMuted) {
+      event.target.mute();
+    } else {
+      event.target.unMute();
+    }
+  } catch (_e) {
+    // Volume control may be hardware-managed on some mobile devices
   }
 
-  try {
-    audioEl.volume = 0.78;
-    await audioEl.play();
-    STATE.musicPlaying = true;
-    STATE.usingSynthFallback = false;
-    updateMusicUI(true);
+  // Only start playback if the user has already completed the intentional opening interaction
+  if (STATE.playlistStarted && !STATE.userManuallyPaused && !STATE.playlistFinished) {
+    playPlaylistTrackAtIndex(STATE.playlistIndex, true);
+  }
+}
+
+/**
+ * Silently unlocks/primes the YouTube IFrame player during the discrete First Touch
+ * so mobile and desktop browsers allow audio playback when the Second Swipe completes.
+ */
+function primeYouTubePlayerOnFirstTouch() {
+  if (STATE.playerPrimed || STATE.playlistStarted) return;
+  if (!STATE.ytReady || !STATE.ytPlayer) {
+    createYouTubePlayerInstance();
     return;
-  } catch (_initialErr) {
-    for (const candidatePath of JOYCE_DATA.audio.candidates) {
-      try {
-        audioEl.src = candidatePath;
-        await audioEl.play();
-        STATE.musicPlaying = true;
-        STATE.usingSynthFallback = false;
-        updateMusicUI(true);
+  }
+  try {
+    STATE.isPrimingAudio = true;
+    STATE.ytPlayer.mute();
+    STATE.ytPlayer.playVideo();
+  } catch (_e) {
+    STATE.isPrimingAudio = false;
+  }
+}
+
+function clearPlaybackWatchdog() {
+  if (STATE.playbackWatchdogTimer) {
+    clearTimeout(STATE.playbackWatchdogTimer);
+    STATE.playbackWatchdogTimer = null;
+  }
+}
+
+function schedulePlaybackWatchdog() {
+  clearPlaybackWatchdog();
+  STATE.playbackWatchdogTimer = setTimeout(() => {
+    if (!STATE.playlistStarted || STATE.userManuallyPaused || STATE.playlistFinished) {
+      return;
+    }
+    if (!STATE.ytReady || !STATE.ytPlayer) {
+      showYouTubeStatusBanner(
+        "YouTube player could not connect. Check your internet connection.",
+        false
+      );
+      return;
+    }
+    try {
+      const st = STATE.ytPlayer.getPlayerState();
+      if (st !== window.YT.PlayerState.PLAYING && st !== window.YT.PlayerState.BUFFERING) {
+        if (window.location && window.location.protocol === "file:") {
+          showYouTubeStatusBanner(
+            "YouTube blocks embedded music on file:// URLs (Error 153). Open via http://localhost or a live web server.",
+            false
+          );
+        } else {
+          showYouTubeStatusBanner(
+            "Browser paused autoplay. Tap Play to start the soundtrack.",
+            true
+          );
+        }
+        STATE.musicPlaying = false;
+        updateMusicUI(false);
+      }
+    } catch (_e) {
+      // Ignore
+    }
+  }, 4200);
+}
+
+function onYouTubePlayerStateChange(event) {
+  if (!window.YT) return;
+  const playerState = event.data;
+
+  // If we were silently priming the player on the first touch, pause immediately at 0s until the second swipe finishes
+  if (STATE.isPrimingAudio) {
+    if (
+      playerState === window.YT.PlayerState.PLAYING ||
+      playerState === window.YT.PlayerState.BUFFERING
+    ) {
+      STATE.isPrimingAudio = false;
+      STATE.playerPrimed = true;
+      if (!STATE.playlistStarted) {
+        try {
+          event.target.pauseVideo();
+          event.target.seekTo(0, true);
+          if (!STATE.isMuted) {
+            event.target.unMute();
+            event.target.setVolume(STATE.targetVolume);
+          }
+        } catch (_e) {
+          // Ignore
+        }
         return;
-      } catch (_extErr) {
-        // Continue trying candidate paths
       }
     }
   }
 
-  startGentleNocturneFallback();
-  STATE.musicPlaying = true;
-  STATE.usingSynthFallback = true;
-  updateMusicUI(true);
+  if (playerState === window.YT.PlayerState.PLAYING) {
+    clearPlaybackWatchdog();
+    hideYouTubeStatusBanner();
+    try {
+      if (!STATE.isMuted) {
+        event.target.unMute();
+        event.target.setVolume(STATE.targetVolume);
+      }
+    } catch (_e) {
+      // Ignore
+    }
+    STATE.musicPlaying = true;
+    updateMusicUI(true);
+  } else if (playerState === window.YT.PlayerState.PAUSED) {
+    if (STATE.userManuallyPaused) {
+      STATE.musicPlaying = false;
+      updateMusicUI(false);
+    }
+  } else if (playerState === window.YT.PlayerState.ENDED) {
+    if (!STATE.playlistStarted) return;
+    // Sequential playlist progression: 0 (Wicked Games) -> 1 (Earned It) -> 2 (Adorn) -> Stop
+    advanceSequentialPlaylistOnEnd();
+  }
+}
+
+function advanceSequentialPlaylistOnEnd() {
+  const nextIndex = STATE.playlistIndex + 1;
+  if (nextIndex < JAY_DATA.youtubePlaylist.length) {
+    playPlaylistTrackAtIndex(nextIndex, true);
+  } else {
+    // After the third song finishes, stop playback completely
+    clearPlaybackWatchdog();
+    STATE.playlistFinished = true;
+    STATE.musicPlaying = false;
+    updateMusicUI(false);
+  }
+}
+
+function onYouTubePlayerError(event) {
+  const errorCode = event ? event.data : null;
+  const idx = STATE.playlistIndex;
+  const track = JAY_DATA.youtubePlaylist[idx];
+  if (!track || !STATE.ytPlayer) return;
+
+  // If opened directly from file://, YouTube rejects all music embeds with Error 153 (missing HTTP Referer)
+  if (window.location && window.location.protocol === "file:" && errorCode === 153) {
+    if (STATE.playlistStarted) {
+      showYouTubeStatusBanner(
+        "YouTube blocks embedded music on local file:// URLs (Error 153). Open via http://localhost or GitHub Pages.",
+        false
+      );
+      STATE.musicPlaying = false;
+      updateMusicUI(false);
+    }
+    return;
+  }
+
+  const fallbackIdx = STATE.ytFallbackIndices[idx] || 0;
+  if (track.fallbackIds && fallbackIdx < track.fallbackIds.length) {
+    const nextVideoId = track.fallbackIds[fallbackIdx];
+    STATE.ytFallbackIndices[idx] = fallbackIdx + 1;
+    STATE.loadedVideoId = nextVideoId;
+    try {
+      if (STATE.playlistStarted && !STATE.userManuallyPaused && !STATE.playlistFinished) {
+        STATE.ytPlayer.loadVideoById({ videoId: nextVideoId, startSeconds: 0 });
+        STATE.ytPlayer.playVideo();
+      } else {
+        STATE.ytPlayer.cueVideoById({ videoId: nextVideoId, startSeconds: 0 });
+      }
+      return;
+    } catch (_err) {
+      // Fall through to status banner
+    }
+  }
+
+  // All candidate IDs for this track were blocked by YouTube
+  clearPlaybackWatchdog();
+  STATE.musicPlaying = false;
+  updateMusicUI(false);
+  if (STATE.playlistStarted) {
+    showYouTubeStatusBanner(
+      `YouTube blocked playback for "${track.title}" (Error ${errorCode || "restricted"}).`,
+      true
+    );
+  }
+}
+
+function getActiveVideoIdForIndex(index) {
+  const track =
+    JAY_DATA.youtubePlaylist[index] || JAY_DATA.youtubePlaylist[0];
+  const fallbackIdx = STATE.ytFallbackIndices[index] || 0;
+  if (fallbackIdx === 0 || !track.fallbackIds || !track.fallbackIds.length) {
+    return track.videoId;
+  }
+  return (
+    track.fallbackIds[Math.min(fallbackIdx - 1, track.fallbackIds.length - 1)] ||
+    track.videoId
+  );
+}
+
+function updateTrackMetadataUI(index) {
+  const track =
+    JAY_DATA.youtubePlaylist[index] || JAY_DATA.youtubePlaylist[0];
+  const titleEl = document.getElementById("yt-track-title");
+  const artistEl = document.getElementById("yt-track-artist");
+  const phaseEl = document.getElementById("yt-track-phase");
+  const pills = document.querySelectorAll("[data-playlist-index]");
+
+  if (titleEl) titleEl.textContent = track.title;
+  if (artistEl) artistEl.textContent = track.artist;
+  if (phaseEl) phaseEl.textContent = track.phaseLabel;
+
+  pills.forEach((pill) => {
+    const isMatch = Number(pill.getAttribute("data-playlist-index")) === track.index;
+    pill.classList.toggle("active", isMatch);
+  });
+}
+
+/**
+ * Starts the 3-song sequential playlist from Track 1 (Wicked Games – The Weeknd).
+ * Does not restart if the playlist is already running.
+ */
+function startSequentialPlaylist() {
+  STATE.userHasInteracted = true;
+  if (STATE.playlistStarted) return;
+  STATE.playlistStarted = true;
+  STATE.playlistFinished = false;
+  STATE.userManuallyPaused = false;
+  STATE.isPrimingAudio = false;
+  playPlaylistTrackAtIndex(0, false);
+}
+
+function playPlaylistTrackAtIndex(index, forceReload = false) {
+  if (index < 0 || index >= JAY_DATA.youtubePlaylist.length) return;
+
+  const isTrackSwitch = STATE.playlistIndex !== index;
+  STATE.playlistIndex = index;
+  STATE.playlistStarted = true;
+  STATE.playlistFinished = false;
+  STATE.isPrimingAudio = false;
+  updateTrackMetadataUI(index);
+
+  if (!STATE.ytReady || !STATE.ytPlayer) {
+    createYouTubePlayerInstance();
+    return;
+  }
+
+  const videoId = getActiveVideoIdForIndex(index);
+  const needsLoad =
+    forceReload ||
+    isTrackSwitch ||
+    STATE.loadedVideoId !== videoId;
+
+  try {
+    if (!STATE.isMuted) {
+      if (typeof STATE.ytPlayer.unMute === "function") {
+        STATE.ytPlayer.unMute();
+      }
+      if (typeof STATE.ytPlayer.setVolume === "function") {
+        STATE.ytPlayer.setVolume(STATE.targetVolume);
+      }
+    }
+
+    if (needsLoad) {
+      STATE.loadedVideoId = videoId;
+      STATE.ytPlayer.loadVideoById({ videoId, startSeconds: 0 });
+    }
+    STATE.ytPlayer.playVideo();
+
+    STATE.musicPlaying = true;
+    updateMusicUI(true);
+    schedulePlaybackWatchdog();
+  } catch (_err) {
+    showYouTubeStatusBanner(
+      "Tap Play to start the YouTube soundtrack.",
+      true
+    );
+  }
+}
+
+function startBackgroundMusic() {
+  STATE.userHasInteracted = true;
+  STATE.userManuallyPaused = false;
+  hideYouTubeStatusBanner();
+
+  if (!STATE.playlistStarted) {
+    startSequentialPlaylist();
+    return;
+  }
+
+  if (STATE.ytReady && STATE.ytPlayer && typeof STATE.ytPlayer.playVideo === "function") {
+    try {
+      if (!STATE.isMuted) {
+        if (typeof STATE.ytPlayer.unMute === "function") {
+          STATE.ytPlayer.unMute();
+        }
+        if (typeof STATE.ytPlayer.setVolume === "function") {
+          STATE.ytPlayer.setVolume(STATE.targetVolume);
+        }
+      }
+      const st =
+        typeof STATE.ytPlayer.getPlayerState === "function"
+          ? STATE.ytPlayer.getPlayerState()
+          : -1;
+      if (st === -1 || st === 5) {
+        playPlaylistTrackAtIndex(STATE.playlistIndex, true);
+      } else {
+        STATE.ytPlayer.playVideo();
+        STATE.musicPlaying = true;
+        updateMusicUI(true);
+        schedulePlaybackWatchdog();
+      }
+      return;
+    } catch (_err) {
+      showYouTubeStatusBanner("Tap Play to resume YouTube music.", true);
+    }
+  } else {
+    createYouTubePlayerInstance();
+  }
 }
 
 function pauseBackgroundMusic() {
-  const audioEl = document.getElementById("bg-song-player");
-  if (audioEl && !audioEl.paused) {
-    audioEl.pause();
+  clearPlaybackWatchdog();
+  if (STATE.volumeFadeTimer) {
+    clearInterval(STATE.volumeFadeTimer);
+    STATE.volumeFadeTimer = null;
   }
-  stopGentleNocturneFallback();
+  if (STATE.ytReady && STATE.ytPlayer && typeof STATE.ytPlayer.pauseVideo === "function") {
+    try {
+      STATE.ytPlayer.pauseVideo();
+    } catch (_err) {
+      // Ignore
+    }
+  }
   STATE.musicPlaying = false;
   updateMusicUI(false);
 }
 
+function toggleMuteMusic() {
+  STATE.isMuted = !STATE.isMuted;
+
+  if (STATE.ytReady && STATE.ytPlayer) {
+    try {
+      if (STATE.isMuted) {
+        STATE.ytPlayer.mute();
+      } else {
+        STATE.ytPlayer.unMute();
+        STATE.ytPlayer.setVolume(STATE.targetVolume);
+      }
+    } catch (_err) {
+      // Ignore
+    }
+  }
+
+  updateMuteUI();
+}
+
+function setMusicVolume(vol) {
+  const clamped = Math.max(0, Math.min(100, Math.round(vol)));
+  STATE.targetVolume = clamped;
+
+  if (clamped === 0 && !STATE.isMuted) {
+    STATE.isMuted = true;
+  } else if (clamped > 0 && STATE.isMuted) {
+    STATE.isMuted = false;
+  }
+
+  if (STATE.ytReady && STATE.ytPlayer) {
+    try {
+      if (STATE.isMuted) {
+        STATE.ytPlayer.mute();
+      } else {
+        STATE.ytPlayer.unMute();
+        STATE.ytPlayer.setVolume(clamped);
+      }
+    } catch (_err) {
+      // Ignore
+    }
+  }
+
+  updateMuteUI();
+}
+
+function updateMuteUI() {
+  const muteBtn = document.getElementById("yt-mute-btn");
+  const muteIcon = document.getElementById("yt-mute-icon");
+  const slider = document.getElementById("yt-volume-slider");
+
+  if (muteBtn) {
+    muteBtn.setAttribute("aria-pressed", String(STATE.isMuted));
+  }
+  if (muteIcon) {
+    muteIcon.textContent =
+      STATE.isMuted || STATE.targetVolume === 0
+        ? "🔇"
+        : STATE.targetVolume < 45
+          ? "🔉"
+          : "🔊";
+  }
+  if (slider && Number(slider.value) !== STATE.targetVolume) {
+    slider.value = String(STATE.targetVolume);
+  }
+}
+
 function updateMusicUI(isPlaying) {
   const pillBtn = document.getElementById("music-control-btn");
-  const iconEl = document.getElementById("music-pill-icon");
   const textEl = document.getElementById("music-pill-text");
+  const floatPlayBtn = document.getElementById("yt-play-pause-btn");
+  const floatPlayIcon = document.getElementById("yt-play-pause-icon");
 
   if (pillBtn) {
     pillBtn.setAttribute("aria-pressed", String(isPlaying));
     pillBtn.classList.toggle("is-playing", isPlaying);
   }
-  if (iconEl) {
-    iconEl.textContent = isPlaying ? "🎵" : "🎧";
-  }
   if (textEl) {
-    textEl.textContent = isPlaying ? "Playing" : "Paused";
+    textEl.textContent = isPlaying ? "On" : "Off";
   }
-}
-
-function startGentleNocturneFallback() {
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  if (!AudioCtx) return;
-
-  if (!STATE.audioCtx) {
-    STATE.audioCtx = new AudioCtx();
+  if (floatPlayBtn) {
+    floatPlayBtn.setAttribute("aria-pressed", String(isPlaying));
+    floatPlayBtn.classList.toggle("is-playing", isPlaying);
   }
-  if (STATE.audioCtx.state === "suspended") {
-    STATE.audioCtx.resume();
-  }
-  if (STATE.synthTimer) clearInterval(STATE.synthTimer);
-
-  const notes = [293.66, 349.23, 440.0, 523.25, 440.0, 392.0, 349.23, 329.63];
-  let idx = 0;
-
-  const strike = (freq) => {
-    if (!STATE.musicPlaying || !STATE.audioCtx) return;
-    const now = STATE.audioCtx.currentTime;
-    const osc = STATE.audioCtx.createOscillator();
-    const gain = STATE.audioCtx.createGain();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(freq, now);
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.035, now + 0.09);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
-    osc.connect(gain);
-    gain.connect(STATE.audioCtx.destination);
-    osc.start(now);
-    osc.stop(now + 2.25);
-  };
-
-  strike(notes[0]);
-  STATE.synthTimer = setInterval(() => {
-    idx = (idx + 1) % notes.length;
-    strike(notes[idx]);
-  }, 1250);
-}
-
-function stopGentleNocturneFallback() {
-  if (STATE.synthTimer) {
-    clearInterval(STATE.synthTimer);
-    STATE.synthTimer = null;
+  if (floatPlayIcon) {
+    floatPlayIcon.textContent = isPlaying ? "❚❚" : "▶";
   }
 }
 
 /* ==========================================================================
-   STAGE 2: THE JOYCE ALLEGATIONS
+   STAGE 2: PERSONAL CONFESSIONS + AUTO-UNLOCKING PERSONAL LOCKBOX
    ========================================================================== */
 function initStage2Allegations() {
   const listEl = document.getElementById("allegations-list");
   const progressEl = document.getElementById("allegations-progress");
+  const lockboxCard = document.getElementById("secret-lockbox-card");
+  const lockIcon = document.getElementById("lockbox-status-icon");
+  const lockTitle = document.getElementById("lockbox-status-title");
   const pokeBtn = document.getElementById("cheeky-poke-btn");
   const pokeOut = document.getElementById("cheeky-poke-output");
 
   if (!listEl) return;
   listEl.innerHTML = "";
 
-  JOYCE_DATA.allegations.forEach((item) => {
+  const unlockPersonalNote = () => {
+    if (lockboxCard) lockboxCard.classList.add("unlocked");
+    if (lockIcon) lockIcon.textContent = "🔓";
+    if (lockTitle) {
+      lockTitle.textContent = "Unfiltered Personal Note • Unlocked For Jay";
+    }
+    if (pokeOut) pokeOut.removeAttribute("hidden");
+    if (pokeBtn) pokeBtn.style.display = "none";
+    burstStars(22);
+  };
+
+  JAY_DATA.allegations.forEach((item) => {
     const card = document.createElement("article");
     card.className = "allegation-card";
 
@@ -458,13 +1354,16 @@ function initStage2Allegations() {
         const isOpened = card.classList.toggle("opened");
         triggerBtn.setAttribute("aria-expanded", String(isOpened));
         if (badge) {
-          badge.textContent = isOpened ? "Unsealed ✦" : "Tap to open";
+          badge.textContent = isOpened ? "Unsealed ♡" : "Tap to open";
         }
         if (isOpened) {
           STATE.openedAllegations.add(item.id);
         }
         if (progressEl) {
-          progressEl.textContent = `${STATE.openedAllegations.size} / ${JOYCE_DATA.allegations.length} cards opened`;
+          progressEl.textContent = `${STATE.openedAllegations.size} / ${JAY_DATA.allegations.length} confessions opened`;
+        }
+        if (STATE.openedAllegations.size === JAY_DATA.allegations.length) {
+          unlockPersonalNote();
         }
       });
     }
@@ -482,29 +1381,50 @@ function initStage2Allegations() {
     listEl.appendChild(card);
   });
 
-  if (pokeBtn && pokeOut) {
-    pokeBtn.addEventListener("click", () => {
-      const list = JOYCE_DATA.cheekyObservations;
-      pokeOut.textContent = `“${list[STATE.cheekyIdx % list.length]}”`;
-      STATE.cheekyIdx++;
-      burstStars(10);
-    });
+  if (pokeBtn) {
+    pokeBtn.addEventListener("click", unlockPersonalNote);
   }
 }
 
 /* ==========================================================================
-   STAGE 3: ATMOSPHERIC GOTHIC HORROR PORTRAIT (assets/jay.jpeg)
+   STAGE 3: PROGRESSIVE 3-CHAPTER DISTANCE STORY OVER HER PORTRAIT (jay.jpeg)
    ========================================================================== */
-function initStage3HorrorPortrait() {
-  const hauntedBtn = document.getElementById("haunted-house-btn");
-  const replyEl = document.getElementById("haunted-house-reply");
+function initStage3DistanceStory() {
+  const stageBox = document.getElementById("atmospheric-jay-stage");
+  const tabs = document.querySelectorAll(".distance-tab");
+  const quoteEl = document.getElementById("horror-caption-1");
+  const narrativeEl = document.getElementById("haunted-house-reply");
+  const nextBtn = document.getElementById("haunted-house-btn");
+  const nextLabel = document.getElementById("haunted-btn-label");
 
-  if (hauntedBtn && replyEl) {
-    hauntedBtn.addEventListener("click", () => {
-      const list = JOYCE_DATA.horrorReplies;
-      replyEl.textContent = list[STATE.horrorIdx % list.length];
-      STATE.horrorIdx++;
-      burstStars(16);
+  const setChapter = (num) => {
+    STATE.distanceChapter = num;
+    const data = JAY_DATA.distanceChapters[num];
+    if (!data) return;
+
+    if (stageBox) stageBox.setAttribute("data-story-chapter", String(num));
+    tabs.forEach((t) => {
+      const isMatch = Number(t.dataset.chapter) === num;
+      t.classList.toggle("active", isMatch);
+      t.setAttribute("aria-selected", String(isMatch));
+    });
+
+    if (quoteEl) quoteEl.textContent = data.quote;
+    if (narrativeEl) narrativeEl.textContent = data.narrative;
+    if (nextLabel) nextLabel.textContent = data.nextLabel;
+    burstStars(16);
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      setChapter(Number(tab.dataset.chapter) || 1);
+    });
+  });
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      const nextNum = STATE.distanceChapter < 3 ? STATE.distanceChapter + 1 : 1;
+      setChapter(nextNum);
     });
   }
 }
@@ -532,7 +1452,7 @@ function initStage4EyesMoment() {
       STATE.eyesRevealStep = 3;
       line3.removeAttribute("hidden");
       if (sanctuary) sanctuary.setAttribute("data-reveal-level", "3");
-      if (btnText) btnText.textContent = "Continue to A Little Game ↓";
+      if (btnText) btnText.textContent = "Pick Your Temptation Below ↓";
       burstStars(22);
     } else {
       const stage5 = document.getElementById("stage-5");
@@ -542,265 +1462,89 @@ function initStage4EyesMoment() {
 }
 
 /* ==========================================================================
-   STAGE 5: A LITTLE GAME (4-WORD MOBILE CROSSWORD)
+   STAGE 5: "PICK YOUR TEMPTATION" 3-CARD INTERACTIVE EXPERIENCE
+   Replaces the Crossword Game
    ========================================================================== */
-function initStage5Crossword() {
-  const entriesWrap = document.getElementById("cw-entries-list");
-  const previewWrap = document.getElementById("cw-visual-preview");
-  const checkBtn = document.getElementById("cw-check-btn");
+function initStage5PickYourTemptation() {
+  const cards = document.querySelectorAll(".temptation-choice-card");
+  const scenarioStage = document.getElementById("temptation-scenario-stage");
+  const kickerEl = document.getElementById("scenario-kicker");
+  const titleEl = document.getElementById("scenario-title");
+  const leadEl = document.getElementById("scenario-lead-text");
+  const escalatedEl = document.getElementById("scenario-escalated-text");
+  const escalateBtn = document.getElementById("scenario-escalate-btn");
+  const escalateLabel = document.getElementById("scenario-escalate-label");
+  const progressCount = document.getElementById("temptation-progress-count");
+  const progressFill = document.getElementById("temptation-progress-fill");
+  const rewardBanner = document.getElementById("temptation-reward-banner");
 
-  if (!entriesWrap) return;
-  entriesWrap.innerHTML = "";
+  if (!cards.length || !scenarioStage) return;
 
-  JOYCE_DATA.crossword.entries.forEach((entry) => {
-    const len = entry.answer.length;
-    const card = document.createElement("div");
-    card.className = "cw-entry-card";
-    card.id = `cw-entry-card-${entry.number}`;
+  const selectTemptation = (key, cardEl) => {
+    const data = JAY_DATA.temptations[key];
+    if (!data) return;
 
-    let boxesHtml = "";
-    for (let i = 0; i < len; i++) {
-      boxesHtml += `
-        <input
-          type="text"
-          maxlength="1"
-          inputmode="text"
-          autocomplete="off"
-          autocapitalize="characters"
-          spellcheck="false"
-          class="cw-letter-input"
-          data-word="${entry.number}"
-          data-index="${i}"
-          aria-label="Clue ${entry.number} letter ${i + 1} of ${len}"
-        />
-      `;
-    }
+    STATE.activeTemptation = key;
+    STATE.exploredTemptations.add(key);
 
-    card.innerHTML = `
-      <div class="cw-entry-top">
-        <span class="cw-entry-num">Clue #${entry.number}</span>
-        <span class="cw-letter-count">${len} letters</span>
-      </div>
-      <p class="cw-clue-text">${entry.clue}</p>
-      <div class="cw-boxes-row" data-len="${len}">
-        ${boxesHtml}
-      </div>
-      <div class="cw-entry-footer">
-        <button type="button" class="cw-hint-btn" data-hint-word="${entry.number}">
-          <span>💡 Hint (Reveal letter)</span>
-        </button>
-        <span class="cw-word-status" id="cw-word-status-${entry.number}">0 / ${len}</span>
-      </div>
-    `;
-
-    entriesWrap.appendChild(card);
-
-    const inputs = Array.from(card.querySelectorAll(".cw-letter-input"));
-    STATE.crosswordInputs[entry.number] = inputs;
-
-    inputs.forEach((input, idx) => {
-      input.addEventListener("input", (e) => {
-        const clean = e.target.value.replace(/[^a-zA-Z]/g, "").toUpperCase();
-        e.target.value = clean ? clean.slice(-1) : "";
-        e.target.classList.remove("is-correct", "is-wrong");
-
-        updateCrosswordState(false);
-
-        if (e.target.value && idx < inputs.length - 1) {
-          inputs[idx + 1].focus();
-        }
-      });
-
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && !input.value && idx > 0) {
-          e.preventDefault();
-          inputs[idx - 1].focus();
-        } else if (e.key === "ArrowRight" && idx < inputs.length - 1) {
-          e.preventDefault();
-          inputs[idx + 1].focus();
-        } else if (e.key === "ArrowLeft" && idx > 0) {
-          e.preventDefault();
-          inputs[idx - 1].focus();
-        }
-      });
-    });
-
-    const hintBtn = card.querySelector(".cw-hint-btn");
-    if (hintBtn) {
-      hintBtn.addEventListener("click", () => {
-        revealLetterForWord(entry);
-      });
-    }
-  });
-
-  if (previewWrap) {
-    renderMiniCrosswordPreview();
-  }
-
-  if (checkBtn) {
-    checkBtn.addEventListener("click", () => {
-      updateCrosswordState(true);
-    });
-  }
-}
-
-function revealLetterForWord(entry) {
-  const inputs = STATE.crosswordInputs[entry.number] || [];
-  const answer = entry.answer.toUpperCase();
-  const feedbackEl = document.getElementById("cw-feedback-msg");
-
-  const targetIdx = inputs.findIndex(
-    (inp, idx) => inp.value.toUpperCase() !== answer[idx]
-  );
-
-  if (targetIdx === -1) {
-    if (feedbackEl) {
-      feedbackEl.textContent = `Clue #${entry.number} is already solved, Joyce!`;
-    }
-    return;
-  }
-
-  inputs[targetIdx].value = answer[targetIdx];
-  inputs[targetIdx].classList.remove("is-wrong");
-  inputs[targetIdx].classList.add("is-correct");
-
-  const nextEmpty = inputs.findIndex(
-    (inp, idx) => inp.value.toUpperCase() !== answer[idx]
-  );
-  if (nextEmpty !== -1) {
-    inputs[nextEmpty].focus();
-  }
-
-  if (feedbackEl) {
-    feedbackEl.textContent = `Hint used on Clue #${entry.number}: revealed "${answer[targetIdx]}".`;
-  }
-
-  updateCrosswordState(false);
-}
-
-function updateCrosswordState(highlightErrors = false) {
-  let solvedCount = 0;
-  let totalFilledLetters = 0;
-
-  JOYCE_DATA.crossword.entries.forEach((entry) => {
-    const inputs = STATE.crosswordInputs[entry.number] || [];
-    const answer = entry.answer.toUpperCase();
-    const card = document.getElementById(`cw-entry-card-${entry.number}`);
-    const statusEl = document.getElementById(`cw-word-status-${entry.number}`);
-
-    let filledInWord = 0;
-    let wordCorrect = true;
-
-    inputs.forEach((inp, idx) => {
-      const val = inp.value.toUpperCase();
-      if (val) {
-        filledInWord++;
-        totalFilledLetters++;
-      }
-      if (val !== answer[idx]) {
-        wordCorrect = false;
-      }
-
-      if (highlightErrors) {
-        inp.classList.remove("is-correct", "is-wrong");
-        if (val) {
-          inp.classList.add(val === answer[idx] ? "is-correct" : "is-wrong");
-        }
-      } else if (val === answer[idx] && wordCorrect) {
-        inp.classList.remove("is-wrong");
-        inp.classList.add("is-correct");
+    cards.forEach((c) => {
+      const isSelected = c === cardEl;
+      c.classList.toggle("selected", isSelected);
+      c.setAttribute("aria-pressed", String(isSelected));
+      if (STATE.exploredTemptations.has(c.dataset.temptation)) {
+        c.classList.add("explored");
       }
     });
 
-    if (wordCorrect) {
-      solvedCount++;
-      inputs.forEach((inp) => {
-        inp.classList.remove("is-wrong");
-        inp.classList.add("is-correct");
-      });
+    scenarioStage.removeAttribute("hidden");
+    if (kickerEl) kickerEl.textContent = data.kicker;
+    if (titleEl) titleEl.textContent = data.title;
+    if (leadEl) leadEl.textContent = data.lead;
+
+    if (escalatedEl) {
+      escalatedEl.textContent = data.escalated;
+      escalatedEl.setAttribute("hidden", "");
+    }
+    if (escalateBtn) {
+      escalateBtn.removeAttribute("hidden");
+    }
+    if (escalateLabel) {
+      escalateLabel.textContent = data.buttonLabel;
     }
 
-    if (card) {
-      card.classList.toggle("entry-solved", wordCorrect);
+    const count = STATE.exploredTemptations.size;
+    if (progressCount) {
+      progressCount.textContent = `${count} / 3 Explored`;
     }
-    if (statusEl) {
-      statusEl.textContent = wordCorrect
-        ? "Solved ✓"
-        : `${filledInWord} / ${answer.length}`;
+    if (progressFill) {
+      progressFill.style.width = `${(count / 3) * 100}%`;
     }
-  });
 
-  const countBadge = document.getElementById("cw-progress-count");
-  const fillBar = document.getElementById("cw-progress-fill");
-  const feedbackEl = document.getElementById("cw-feedback-msg");
-  const rewardBanner = document.getElementById("cw-reward-banner");
-  const rewardText = document.getElementById("cw-reward-text");
-
-  if (countBadge) {
-    countBadge.textContent = `${solvedCount} / 4 Solved`;
-  }
-  if (fillBar) {
-    fillBar.style.width = `${(solvedCount / 4) * 100}%`;
-  }
-
-  renderMiniCrosswordPreview();
-
-  if (solvedCount === 4) {
-    if (rewardText) {
-      rewardText.textContent = JOYCE_DATA.crossword.rewardMessage;
-    }
-    if (rewardBanner && rewardBanner.hasAttribute("hidden")) {
+    if (count === 3 && rewardBanner && rewardBanner.hasAttribute("hidden")) {
       rewardBanner.removeAttribute("hidden");
-      burstStars(35);
-    }
-    if (feedbackEl) {
-      feedbackEl.textContent = "All 4 answers verified! ✦";
-    }
-  } else if (highlightErrors && feedbackEl) {
-    if (totalFilledLetters === 0) {
-      feedbackEl.textContent =
-        "Tap any box to type a letter, or tap a 💡 Hint button!";
+      burstStars(36);
     } else {
-      feedbackEl.textContent =
-        "Green letters are right! Fix any pink boxes or tap 💡 Hint.";
+      burstStars(18);
     }
+  };
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      selectTemptation(card.dataset.temptation, card);
+    });
+  });
+
+  if (escalateBtn && escalatedEl) {
+    escalateBtn.addEventListener("click", () => {
+      escalatedEl.removeAttribute("hidden");
+      escalateBtn.setAttribute("hidden", "");
+      burstStars(24);
+    });
   }
-}
-
-function renderMiniCrosswordPreview() {
-  const previewWrap = document.getElementById("cw-visual-preview");
-  if (!previewWrap) return;
-
-  const words = JOYCE_DATA.crossword.entries.map((entry) => {
-    const inputs = STATE.crosswordInputs[entry.number] || [];
-    const current = inputs.map((i) => i.value.toUpperCase() || "·");
-    const isSolved =
-      inputs.map((i) => i.value.toUpperCase()).join("") === entry.answer;
-    return { number: entry.number, current, len: entry.answer.length, isSolved };
-  });
-
-  let rowsHtml = `<span class="cw-map-caption">✦ Live Crossword Board ✦</span>`;
-  words.forEach((w) => {
-    const padLeft = Math.floor((10 - w.len) / 2);
-    let cells = "";
-    for (let c = 0; c < 10; c++) {
-      const letterIdx = c - padLeft;
-      if (letterIdx >= 0 && letterIdx < w.len) {
-        const ch = w.current[letterIdx];
-        const cls = w.isSolved ? "solved-slot" : "filled-slot";
-        cells += `<div class="cw-mini-cell ${cls}">${ch}</div>`;
-      } else {
-        cells += `<div class="cw-mini-cell empty"></div>`;
-      }
-    }
-    rowsHtml += `<div class="cw-mini-grid">${cells}</div>`;
-  });
-
-  previewWrap.innerHTML = rowsHtml;
 }
 
 /* ==========================================================================
-   STAGE 6: THE MESSAGE I ACTUALLY WANTED YOU TO READ
+   STAGE 6: DEEP DESIRE & INTIMATE CONFESSION + INTERACTIVE PROMISE PILLS
    ========================================================================== */
 function initStage6Heartfelt() {
   const stackEl = document.getElementById("heartfelt-paragraphs");
@@ -808,38 +1552,47 @@ function initStage6Heartfelt() {
   const punchlineEl = document.getElementById("heartfelt-punchline");
   const nextBtn = document.getElementById("next-paragraph-btn");
   const showAllBtn = document.getElementById("show-all-paragraphs-btn");
+  const pills = document.querySelectorAll("#here-pills-grid .here-pill");
 
   if (!stackEl || !nextBtn) return;
 
-  const paragraphs = JOYCE_DATA.heartfeltMessage.paragraphs;
+  const paragraphs = JAY_DATA.heartfeltMessage.paragraphs;
   if (punchlineEl) {
-    punchlineEl.textContent = JOYCE_DATA.heartfeltMessage.endingPunchline;
+    punchlineEl.textContent = JAY_DATA.heartfeltMessage.endingPunchline;
   }
 
-  const renderUpTo = (count) => {
+  const renderUpTo = (count, highlightIdx = -1) => {
     const existingCount = stackEl.children.length;
     for (let i = existingCount; i < count && i < paragraphs.length; i++) {
       const p = document.createElement("p");
       p.className = "heartfelt-para";
+      p.dataset.paraIdx = String(i);
       p.textContent = paragraphs[i];
       stackEl.appendChild(p);
     }
 
+    Array.from(stackEl.children).forEach((el, idx) => {
+      el.classList.toggle("highlighted-para", idx === highlightIdx);
+    });
+
     if (count >= paragraphs.length) {
       if (endingEl) endingEl.removeAttribute("hidden");
-      nextBtn.innerHTML = `<span>Continue to Your Emergency Button</span><span aria-hidden="true">↓</span>`;
+      nextBtn.innerHTML = `<span>Continue to After-Hours Dial</span><span aria-hidden="true">↓</span>`;
       if (showAllBtn) showAllBtn.style.display = "none";
     } else {
-      nextBtn.innerHTML = `<span>Tap for Next Part (${count} / ${paragraphs.length})</span><span aria-hidden="true">✦</span>`;
+      nextBtn.innerHTML = `<span>Tap for Next Part (${count} / ${paragraphs.length})</span><span aria-hidden="true">♡</span>`;
     }
   };
 
-  renderUpTo(1);
+  renderUpTo(1, 0);
 
   nextBtn.addEventListener("click", () => {
     if (STATE.revealedParagraphs < paragraphs.length) {
       STATE.revealedParagraphs++;
-      renderUpTo(STATE.revealedParagraphs);
+      pills.forEach((pill, i) =>
+        pill.classList.toggle("active", i === STATE.revealedParagraphs - 1)
+      );
+      renderUpTo(STATE.revealedParagraphs, STATE.revealedParagraphs - 1);
     } else {
       const stage7 = document.getElementById("stage-7");
       if (stage7) stage7.scrollIntoView({ behavior: "smooth" });
@@ -852,42 +1605,76 @@ function initStage6Heartfelt() {
       renderUpTo(paragraphs.length);
     });
   }
+
+  // Interactive Promise Pills jump/reveal up to that exact paragraph and highlight it
+  pills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      const targetIdx = Number(pill.dataset.paraIndex) || 0;
+      pills.forEach((p) => p.classList.remove("active"));
+      pill.classList.add("active");
+
+      if (STATE.revealedParagraphs < targetIdx + 1) {
+        STATE.revealedParagraphs = targetIdx + 1;
+      }
+      renderUpTo(STATE.revealedParagraphs, targetIdx);
+      burstStars(12);
+    });
+  });
 }
 
 /* ==========================================================================
-   STAGE 7: YOUR EMERGENCY BUTTON
+   STAGE 7: 4-MOOD AFTER-HOURS DIAL ("What Do You Need Tonight?")
    ========================================================================== */
-function initStage7Emergency() {
+function initStage7NightMoodDial() {
+  const moodChips = document.querySelectorAll(".night-mood-chip");
   const btn = document.getElementById("emergency-comfort-btn");
   const textEl = document.getElementById("emergency-message-text");
   const metaEl = document.getElementById("emergency-tap-counter");
 
-  if (!btn || !textEl) return;
+  if (!textEl) return;
 
-  btn.addEventListener("click", () => {
-    const list = JOYCE_DATA.emergencyMessages;
-    let idx = Math.floor(Math.random() * list.length);
-    if (list.length > 1 && idx === STATE.lastEmergencyIndex) {
-      idx = (idx + 1) % list.length;
+  const showMoodMessage = (moodKey, advance = false) => {
+    const list =
+      JAY_DATA.nightMoodMessages[moodKey] ||
+      JAY_DATA.nightMoodMessages.desired;
+    if (advance) {
+      STATE.nightMoodIndices[moodKey] =
+        ((STATE.nightMoodIndices[moodKey] || 0) + 1) % list.length;
     }
-    STATE.lastEmergencyIndex = idx;
+    const idx = (STATE.nightMoodIndices[moodKey] || 0) % list.length;
     STATE.emergencyTapCount++;
 
     textEl.style.opacity = "0";
     setTimeout(() => {
       textEl.textContent = `“${list[idx]}”`;
       textEl.style.opacity = "1";
-    }, 150);
+    }, 140);
 
     if (metaEl) {
-      metaEl.textContent = `Reminder #${STATE.emergencyTapCount} • Tap again anytime`;
+      metaEl.textContent = `Mood note ${idx + 1} of ${list.length} • Tap below for another`;
     }
-    burstStars(12);
+    burstStars(14);
+  };
+
+  moodChips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      moodChips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+      const mood = chip.dataset.mood || "desired";
+      STATE.activeNightMood = mood;
+      showMoodMessage(mood, false);
+    });
   });
+
+  if (btn) {
+    btn.addEventListener("click", () => {
+      showMoodMessage(STATE.activeNightMood, true);
+    });
+  }
 }
 
 /* ==========================================================================
-   STAGE 8: THE FINAL LITTLE SURPRISE
+   STAGE 8: THE FINAL INTIMATE LETTER
    ========================================================================== */
 function initStage8FinalSurprise() {
   const sealedBox = document.getElementById("letter-sealed-box");
@@ -898,12 +1685,12 @@ function initStage8FinalSurprise() {
   const creditsEl = document.getElementById("final-credits-line");
 
   if (bodyWrap) {
-    bodyWrap.innerHTML = JOYCE_DATA.finalLetter.paragraphs
+    bodyWrap.innerHTML = JAY_DATA.finalLetter.paragraphs
       .map((line) => `<p>${line}</p>`)
       .join("");
   }
   if (creditsEl) {
-    creditsEl.textContent = JOYCE_DATA.finalLetter.credits;
+    creditsEl.textContent = JAY_DATA.finalLetter.credits;
   }
 
   const unfoldLetter = () => {
@@ -917,24 +1704,37 @@ function initStage8FinalSurprise() {
 }
 
 /* ==========================================================================
-   CINEMATIC FINAL SCENE & FOREGROUND SPARKLE / CHOCOLATE SEQUENCE
-   Triggered when Joyce presses "Send Midnight Sparkles ✨"
+   CINEMATIC FINAL SCENE & SEPARATE OPTIONAL CHOCOLATE BONUS EASTER EGG
    ========================================================================== */
 function initCinematicEndingSequence() {
   const triggerBtn = document.getElementById("send-midnight-sparkles-btn");
+  const bonusEasterEggBtn = document.getElementById(
+    "bonus-chocolate-easter-egg-btn"
+  );
   const oneMoreChocoBtn = document.getElementById("one-more-chocolate-btn");
 
+  // Primary climax button launches the dark-romance midnight finale (anime chocolate hidden unless requested)
   if (triggerBtn) {
-    triggerBtn.addEventListener("click", startCinematicFinalScene);
+    triggerBtn.addEventListener("click", () => startCinematicFinalScene(false));
+  }
+
+  // Optional Bonus Easter Egg button launches the finale with the cute anime chocolate girl & falling chocolates
+  if (bonusEasterEggBtn) {
+    bonusEasterEggBtn.addEventListener("click", () =>
+      startCinematicFinalScene(true)
+    );
   }
 
   if (oneMoreChocoBtn) {
     oneMoreChocoBtn.addEventListener("click", () => {
+      const hero = document.getElementById("cinematic-anime-hero");
+      if (hero) {
+        hero.removeAttribute("hidden");
+        requestAnimationFrame(() => hero.classList.add("hero-emerged"));
+      }
       dropChocolatesFromTop(10);
       spawnForegroundBurst(24);
-      showTemporaryCinematicToast("🍫 Extra chocolate air-dropped for Joyce!");
-
-      // Give her 9 full seconds after her click before fading to the black epilogue
+      showTemporaryCinematicToast("🍫 Secret chocolate delivery air-dropped for Jay!");
       scheduleFinalFadeToBlack(9500);
     });
   }
@@ -953,7 +1753,7 @@ function clearCinematicTimers() {
   }
 }
 
-function startCinematicFinalScene() {
+function startCinematicFinalScene(showChocolateEasterEgg = false) {
   clearCinematicTimers();
 
   const scene = document.getElementById("cinematic-ending-scene");
@@ -969,10 +1769,17 @@ function startCinematicFinalScene() {
 
   if (!scene || !stageInner || !hero) return;
 
-  // Reset state so it works reliably every time the button is pressed
   scene.classList.remove("scene-visible", "scene-blackout");
   stageInner.classList.remove("fade-into-black");
   hero.classList.remove("hero-emerged");
+
+  // Keep the anime chocolate illustration as an optional bonus Easter egg
+  if (showChocolateEasterEgg) {
+    hero.removeAttribute("hidden");
+  } else {
+    hero.setAttribute("hidden", "");
+  }
+
   [line1, line2, line3, line4, finalBlock, interactiveRow].forEach((el) => {
     if (el) el.setAttribute("hidden", "");
   });
@@ -981,11 +1788,9 @@ function startCinematicFinalScene() {
     epilogueScreen.classList.remove("epilogue-visible");
   }
 
-  // 1. Fade away existing page content & transition into dark cinematic background
   document.body.classList.add("cinematic-ending-active");
   scene.removeAttribute("hidden");
 
-  // Activate the top-most foreground particle layer (OVER the anime girl & text)
   STATE.foregroundOverlayActive = true;
   STATE.foregroundBlackoutDrifting = false;
   spawnForegroundBurst(45);
@@ -994,65 +1799,62 @@ function startCinematicFinalScene() {
     scene.classList.add("scene-visible");
   });
 
-  // 2. Slowly fade the large anime girl eating chocolate into visibility
   STATE.cinematicTimers.push(
     setTimeout(() => {
-      hero.classList.add("hero-emerged");
-      showTemporaryCinematicToast("Chocolate delivery incoming...");
-    }, 550)
+      if (showChocolateEasterEgg) {
+        hero.classList.add("hero-emerged");
+        dropChocolatesFromTop(8);
+        showTemporaryCinematicToast("🍫 Bonus Easter Egg: Chocolate delivery incoming...");
+      } else {
+        showTemporaryCinematicToast("✨ Midnight finale unlocked for Jay...");
+      }
+    }, 500)
   );
 
-  // 3. Let the scene breathe for a moment (~2.4s) before revealing the messages one at a time
   STATE.cinematicTimers.push(
     setTimeout(() => {
       if (line1) line1.removeAttribute("hidden");
-    }, 2700)
+    }, 2100)
   );
 
   STATE.cinematicTimers.push(
     setTimeout(() => {
       if (line2) line2.removeAttribute("hidden");
-      showTemporaryCinematicToast(
-        "Joyce.exe has stopped functioning because of excessive sweetness."
-      );
-    }, 4500)
+    }, 3900)
   );
 
   STATE.cinematicTimers.push(
     setTimeout(() => {
       if (line3) line3.removeAttribute("hidden");
       triggerForegroundShootingStar();
-    }, 6400)
+    }, 5800)
   );
 
   STATE.cinematicTimers.push(
     setTimeout(() => {
       if (line4) line4.removeAttribute("hidden");
       spawnForegroundBurst(25);
-    }, 8200)
+    }, 7600)
   );
 
   STATE.cinematicTimers.push(
     setTimeout(() => {
       if (finalBlock) finalBlock.removeAttribute("hidden");
       if (interactiveRow) interactiveRow.removeAttribute("hidden");
-      dropChocolatesFromTop(6);
       triggerForegroundShootingStar();
 
-      // Rotate occasional playful floating toasts
-      let toastIdx = 2;
+      let toastIdx = 1;
       STATE.cinematicToastInterval = setInterval(() => {
         const msg =
-          JOYCE_DATA.cinematicToasts[
-          toastIdx % JOYCE_DATA.cinematicToasts.length
+          JAY_DATA.cinematicToasts[
+            toastIdx % JAY_DATA.cinematicToasts.length
           ];
         toastIdx++;
         showTemporaryCinematicToast(msg);
       }, 4200);
 
-      // 5. Schedule the final fade-out into deep black after ~9.5 seconds
       scheduleFinalFadeToBlack(9500);
-    }, 10000)
+    }, 9300)
   );
 }
 
@@ -1102,11 +1904,9 @@ function scheduleFinalFadeToBlack(delayMs = 9500) {
       STATE.cinematicToastInterval = null;
     }
 
-    // Slowly fade illustration and text into deep black screen
     if (scene) scene.classList.add("scene-blackout");
     if (stageInner) stageInner.classList.add("fade-into-black");
 
-    // Shift foreground canvas to gentle golden sparkles drifting across the black background
     STATE.foregroundBlackoutDrifting = true;
 
     setTimeout(() => {
@@ -1121,9 +1921,7 @@ function scheduleFinalFadeToBlack(delayMs = 9500) {
 }
 
 /* ==========================================================================
-   DEDICATED TOP-MOST FOREGROUND SPARKLE LAYER (z-index: 9999)
-   Renders golden sparkles, glowing stars, pink particles, floating hearts,
-   tiny chocolates, and shooting stars IN FRONT OF the anime girl & text!
+   DEDICATED TOP-MOST FOREGROUND SPARKLE LAYER
    ========================================================================== */
 let FG_CANVAS = null;
 let FG_CTX = null;
@@ -1142,7 +1940,6 @@ function initForegroundSparklesOverlay() {
   resize();
   window.addEventListener("resize", resize);
 
-  // Pre-seed foreground particles (only drawn when STATE.foregroundOverlayActive is true)
   FG_PARTICLES = [];
   for (let i = 0; i < 42; i++) {
     FG_PARTICLES.push(createForegroundParticle(false));
@@ -1155,13 +1952,11 @@ function createForegroundParticle(isBurst = false) {
   const w = FG_CANVAS ? FG_CANVAS.width : 390;
   const h = FG_CANVAS ? FG_CANVAS.height : 800;
 
-  // In blackout epilogue mode, keep gentle golden sparkles drifting
   const types = STATE.foregroundBlackoutDrifting
     ? ["gold-sparkle", "gold-star"]
-    : ["gold-sparkle", "gold-star", "pink-dot", "heart", "choco"];
+    : ["gold-sparkle", "gold-star", "pink-dot", "heart"];
   const type = types[Math.floor(Math.random() * types.length)];
 
-  // Spawn from the bottom or sides moving upward
   const spawnFromSide = !isBurst && Math.random() < 0.28;
   const startX = isBurst
     ? w * (0.12 + Math.random() * 0.76)
@@ -1189,7 +1984,7 @@ function createForegroundParticle(isBurst = false) {
     vy: isBurst
       ? -0.8 - Math.random() * 1.8
       : -0.45 - Math.random() * 0.85,
-    size: type === "choco" ? 13 : 2.2 + Math.random() * 3.8,
+    size: 2.2 + Math.random() * 3.8,
     phase: Math.random() * Math.PI * 2,
     spinSpeed: 0.02 + Math.random() * 0.03,
     type,
@@ -1255,7 +2050,6 @@ function tickForegroundSparkles() {
   FG_CTX.clearRect(0, 0, w, h);
 
   if (STATE.foregroundOverlayActive) {
-    // Occasionally launch a shooting star
     if (!STATE.foregroundBlackoutDrifting && Math.random() < 0.008) {
       triggerForegroundShootingStar();
     }
@@ -1286,11 +2080,7 @@ function tickForegroundSparkles() {
         }
       }
 
-      // In blackout epilogue, filter out non-golden items gently
-      if (
-        STATE.foregroundBlackoutDrifting &&
-        (p.type === "choco" || p.type === "heart")
-      ) {
+      if (STATE.foregroundBlackoutDrifting && p.type === "heart") {
         continue;
       }
 
@@ -1309,21 +2099,17 @@ function tickForegroundSparkles() {
         FG_CTX.arc(p.x, p.y, p.size * 0.55, 0, Math.PI * 2);
         FG_CTX.fill();
       } else if (p.type === "pink-dot") {
-        FG_CTX.fillStyle = "#f4a4bc";
+        FG_CTX.fillStyle = "#ff4d6d";
         FG_CTX.beginPath();
         FG_CTX.arc(p.x, p.y, p.size * 0.65, 0, Math.PI * 2);
         FG_CTX.fill();
       } else if (p.type === "heart") {
-        drawTinyHeart(FG_CTX, p.x, p.y, p.size * 1.35, "#f4a4bc");
-      } else if (p.type === "choco") {
-        FG_CTX.font = `${Math.round(p.size)}px sans-serif`;
-        FG_CTX.fillText("🍫", p.x, p.y);
+        drawTinyHeart(FG_CTX, p.x, p.y, p.size * 1.35, "#ff1e42");
       }
 
       FG_CTX.restore();
     }
 
-    // Draw shooting stars moving upward across the screen
     for (let j = FG_SHOOTING_STARS.length - 1; j >= 0; j--) {
       const st = FG_SHOOTING_STARS[j];
       st.x += st.vx;
@@ -1345,8 +2131,8 @@ function tickForegroundSparkles() {
         st.y - st.vy * 6
       );
       grad.addColorStop(0, "#fff8e7");
-      grad.addColorStop(0.5, "#f4a4bc");
-      grad.addColorStop(1, "rgba(244, 164, 188, 0)");
+      grad.addColorStop(0.5, "#ff1e42");
+      grad.addColorStop(1, "rgba(255, 30, 66, 0)");
 
       FG_CTX.strokeStyle = grad;
       FG_CTX.lineWidth = 2.2;
@@ -1364,11 +2150,10 @@ function tickForegroundSparkles() {
 }
 
 /* ==========================================================================
-   SCROLL STAGE TRACKER (DOES NOT RESTART MUSIC)
+   SCROLL STAGE TRACKER (Does NOT interrupt or change sequential music playback)
    ========================================================================== */
 function initScrollStageTracker() {
-  const stages = document.querySelectorAll(".stage[data-stage-index]");
-  const dots = document.querySelectorAll(".stage-dot");
+  const sections = document.querySelectorAll("[data-stage-index]");
   const fill = document.getElementById("top-progress-fill");
   const eyesSection = document.getElementById("stage-4");
   let eyesAutoTimerStarted = false;
@@ -1378,13 +2163,9 @@ function initScrollStageTracker() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
-          const idx = Number(entry.target.getAttribute("data-stage-index")) || 2;
-
-          dots.forEach((d) => {
-            d.classList.toggle("active", Number(d.dataset.stage) === idx);
-          });
+          const idx = Number(entry.target.getAttribute("data-stage-index")) || 1;
           if (fill) {
-            const pct = Math.min(100, Math.max(14, ((idx - 1) / 7) * 100));
+            const pct = Math.min(100, Math.max(12, (idx / 8) * 100));
             fill.style.width = `${pct}%`;
           }
 
@@ -1403,11 +2184,11 @@ function initScrollStageTracker() {
     { threshold: 0.25 }
   );
 
-  stages.forEach((s) => observer.observe(s));
+  sections.forEach((s) => observer.observe(s));
 }
 
 /* ==========================================================================
-   LIGHTWEIGHT BACKGROUND STARS CANVAS
+   SUBTLE FLOATING CRIMSON EMBERS & CANDLELIGHT SPARKS CANVAS
    ========================================================================== */
 let STARS = [];
 let STAR_CTX = null;
@@ -1426,7 +2207,7 @@ function initStarsCanvas() {
   window.addEventListener("resize", resize);
 
   STARS = [];
-  for (let i = 0; i < 32; i++) {
+  for (let i = 0; i < 30; i++) {
     STARS.push(makeStar(false));
   }
 
@@ -1436,13 +2217,13 @@ function initStarsCanvas() {
 function makeStar(isBurst = false) {
   const w = STAR_CANVAS ? STAR_CANVAS.width : 390;
   const h = STAR_CANVAS ? STAR_CANVAS.height : 800;
-  const palette = ["#f4a4bc", "#e5b578", "#c8255d"];
+  const palette = ["#ff1e42", "#ff758f", "#e8b878"];
   return {
     x: isBurst ? w * (0.15 + Math.random() * 0.7) : Math.random() * w,
     y: isBurst ? h * (0.25 + Math.random() * 0.5) : Math.random() * h,
     vx: isBurst ? (Math.random() - 0.5) * 2.1 : (Math.random() - 0.5) * 0.16,
     vy: isBurst ? -0.6 - Math.random() * 1.6 : -0.12 - Math.random() * 0.24,
-    r: 1.2 + Math.random() * 2.1,
+    r: 1.1 + Math.random() * 2.0,
     phase: Math.random() * Math.PI * 2,
     color: palette[Math.floor(Math.random() * palette.length)],
     isBurst,
@@ -1483,7 +2264,7 @@ function tickStars() {
     }
 
     const alpha =
-      (0.35 + 0.42 * Math.sin(s.phase)) *
+      (0.32 + 0.42 * Math.sin(s.phase)) *
       (s.isBurst ? Math.min(1, s.life / 30) : 1);
 
     STAR_CTX.globalAlpha = alpha;

@@ -1,245 +1,777 @@
 <!DOCTYPE html>
 <html lang="en" class="gate-locked">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#06030a" />
-  <meta name="description" content="The Joyce Experience — A personal dark-romance digital gift made exclusively for Joyce." />
-  <title>For Joyce ✦ The Joyce Experience</title>
+  <meta name="theme-color" content="#050002" />
+  <meta name="description"
+    content="For Jay — An intimate, seductive dark-romance experience." />
+  <title>For You, Jay ♡</title>
 
-  <!-- Fonts: Cinzel Decorative, Cormorant Garamond, Plus Jakarta Sans -->
+  <!-- Google Fonts: Great Vibes & Sacramento (Neon Script), Cormorant Garamond, Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sacramento&display=swap"
+    rel="stylesheet" />
 
   <link rel="icon" type="image/svg+xml" href="assets/crest-moon-rose.svg" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body class="gate-locked">
 
-  <!-- Background Canvas: Subtle Stars & Floating Crimson Embers -->
+  <!-- Subtle Floating Crimson Embers & Candlelight Particles Canvas -->
   <canvas id="stars-canvas" aria-hidden="true"></canvas>
 
-  <!-- Persistent Audio Element (Starts on 3rd headphone button click, never restarts between sections) -->
-  <audio id="bg-song-player" loop preload="auto">
-    <source src="assets/Song.mp3" type="audio/mpeg" />
-    <source src="assets/song.mp3" type="audio/mpeg" />
-    <source src="assets/Song.m4a" type="audio/mp4" />
-    <source src="assets/song.m4a" type="audio/mp4" />
-    <source src="assets/song.ogg" type="audio/ogg" />
-    <source src="assets/song.wav" type="audio/wav" />
-  </audio>
-
   <!-- =====================================================================
-       1. STRICT FULL-SCREEN HEADPHONE OPENING GATE
-       Prevents scrolling or navigating until she clicks the single button 3 times
+       FULL-SCREEN IMMERSIVE OPENING EXPERIENCE (NO CARDS, NO BORDERS, NO SKIP)
+       - Full-screen close-up photograph of muscular male chest & torso
+         framed from shoulders to waist (no face visible).
+       - First touch: torso moves slightly closer + lighting response +
+         "Already curious? Come a little closer..."
+       - Second interaction: genuine downward finger slide -> natural image
+         response -> gradual fade into main website + starts Track 1 (Wicked Games).
        ===================================================================== -->
   <section
     id="headphone-gate"
-    class="headphone-gate"
-    aria-label="Opening Experience: Headphones Required"
+    class="headphone-gate fullscreen-torso-gate"
+    aria-label="Opening Interaction"
   >
-    <div class="headphone-gate-inner">
-      <div class="gift-card headphones-gate-card">
-        <div class="crest-wrapper">
-          <img src="assets/crest-moon-rose.svg" alt="" class="crest-icon" />
+    <div
+      id="chest-touch-zone"
+      class="fullscreen-torso-stage"
+      role="button"
+      tabindex="0"
+      aria-label="Touch the torso image, then slowly slide your finger down to enter"
+    >
+      <!-- Full-screen faceless shoulders-to-waist muscular torso photograph -->
+      <img
+        src="assets/opening-torso-closeup.jpg"
+        alt="Close-up of a muscular shirtless man's chest and torso framed from shoulders to waist in dark crimson light"
+        id="chest-torso-img"
+        class="fullscreen-torso-img"
+        draggable="false"
+      />
+
+      <!-- Dramatic Dark Crimson Lighting & Intimate Shadow Layer -->
+      <div class="fullscreen-crimson-lighting" id="fullscreen-crimson-lighting" aria-hidden="true"></div>
+
+      <!-- Subtle Touch Ripple Feedback -->
+      <div class="chest-touch-ripple" id="chest-touch-ripple" aria-hidden="true"></div>
+
+      <!-- Subtle Downward Finger Slide Visual Cue (Appears after First Touch) -->
+      <div class="fullscreen-swipe-cue" id="chest-swipe-track" aria-hidden="true">
+        <div class="fullscreen-swipe-line">
+          <div class="fullscreen-swipe-fill" id="chest-swipe-fill"></div>
         </div>
+        <span class="fullscreen-swipe-chevron" id="chest-swipe-thumb">⌄</span>
+      </div>
 
-        <span class="stage-pill">✦ Private Midnight Gift • For Joyce ✦</span>
-
-        <div class="headphones-badge" aria-hidden="true">
-          <span class="hp-pulse-ring"></span>
-          <span class="hp-emoji">🎧</span>
-        </div>
-
-        <h1 class="welcome-heading" id="hp-title">Hey, Joyce...</h1>
-
-        <div id="hp-dialogue-box" class="hp-dialogue-box" aria-live="polite">
-          <p id="hp-primary-text" class="welcome-lead">
-            Before you enter, get your headphones. You're going to need them in your ears for what I have planned.
-          </p>
-        </div>
-
-        <!-- 3-Click Progress Bars -->
-        <div class="hp-step-tracker" aria-label="Headphone check progress">
-          <span class="hp-step-dot active" id="hp-dot-1"></span>
-          <span class="hp-step-dot" id="hp-dot-2"></span>
-          <span class="hp-step-dot" id="hp-dot-3"></span>
-        </div>
-
-        <!-- Single Sequential Interactive Button (No skip, no other navigation) -->
-        <button id="hp-action-btn" class="btn-primary btn-full" type="button">
-          <span id="hp-btn-label">I have them on.</span>
-          <span aria-hidden="true">🎧</span>
-        </button>
+      <!-- Minimal Floating Text Overlay (No cards, no borders, no buttons) -->
+      <div class="fullscreen-torso-overlay" id="chest-gate-card" aria-live="polite">
+        <h1 class="fullscreen-script-heading" id="hp-title">Come closer...</h1>
+        <p id="hp-primary-text" class="fullscreen-lead-text">
+          Touch me... I know you're curious.
+        </p>
+        <p id="chest-instruction-text" class="fullscreen-sub-hint" hidden>
+          Slowly slide your finger down...
+        </p>
       </div>
     </div>
   </section>
 
   <!-- =====================================================================
-       STICKY HEADER (Revealed only after the 3rd headphone click unlocks the site)
+       TOP HEADER BAR (Matches Reference: Crown + "For You..." | "♫ Music: Off" Switch)
        ===================================================================== -->
-  <header class="top-bar" id="top-bar" aria-label="Experience Progress and Audio Control">
-    <div class="top-bar-inner">
-      <a href="#stage-2" class="top-brand">✦ For Joyce</a>
+  <header class="ref-topbar" id="top-bar" aria-label="Top Bar and Music Control">
+    <div class="ref-topbar-inner">
+      <a href="#section-hero" class="ref-brand">
+        <svg viewBox="0 0 36 28" fill="none" class="brand-crown-svg" aria-hidden="true">
+          <path d="M3 22L6 8L13 15L18 4L23 15L30 8L33 22H3Z" stroke="#ff244c" stroke-width="2.2" fill="rgba(255,36,76,0.2)" />
+          <line x1="4" y1="25" x2="32" y2="25" stroke="#ff244c" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+        <span class="brand-script">For You, Jay...</span>
+      </a>
 
-      <div class="stage-dots" id="stage-dots" aria-label="Section progress dots">
-        <a href="#stage-2" class="stage-dot active" data-stage="2" aria-label="Allegations"></a>
-        <a href="#stage-3" class="stage-dot" data-stage="3" aria-label="Gothic Portrait"></a>
-        <a href="#stage-4" class="stage-dot" data-stage="4" aria-label="Those Eyes"></a>
-        <a href="#stage-5" class="stage-dot" data-stage="5" aria-label="Crossword"></a>
-        <a href="#stage-6" class="stage-dot" data-stage="6" aria-label="Heartfelt Message"></a>
-        <a href="#stage-7" class="stage-dot" data-stage="7" aria-label="Emergency Button"></a>
-        <a href="#stage-8" class="stage-dot" data-stage="8" aria-label="Final Letter"></a>
-      </div>
-
-      <!-- Discreet Pause/Play Control -->
+      <!-- Reference Music Toggle Switch ("♫ Music: Off" + pill toggle) -->
       <button
         id="music-control-btn"
-        class="music-pill-btn"
+        class="ref-music-toggle"
         type="button"
         aria-pressed="false"
         aria-label="Toggle background music"
       >
-        <span id="music-pill-icon" aria-hidden="true">🎧</span>
-        <span id="music-pill-text">Off</span>
+        <span class="music-note-icon" id="music-pill-icon" aria-hidden="true">♫</span>
+        <span class="music-label-wrap">Music: <strong id="music-pill-text">Off</strong></span>
+        <span class="toggle-track" aria-hidden="true">
+          <span class="toggle-thumb"></span>
+        </span>
       </button>
     </div>
-
     <div class="top-progress-track" aria-hidden="true">
       <div class="top-progress-fill" id="top-progress-fill"></div>
     </div>
   </header>
 
   <!-- =====================================================================
-       MAIN EXPERIENCE (Unlocked after 3rd headphone click)
+       MAIN DARK-ROMANCE CANVAS (Matches Reference Poster Composition)
        ===================================================================== -->
-  <main class="mobile-shell" id="main-experience">
+  <main class="dark-romance-canvas" id="main-experience">
 
     <!-- ===================================================================
-         STAGE 2: THE JOYCE ALLEGATIONS (Eyes Card + Attitude + Attractive)
+         SECTION 1: HERO — "You... are absolutely special to me"
          =================================================================== -->
-    <section id="stage-2" class="stage in-view" data-stage-index="2" aria-label="The Joyce Allegations">
-      <div class="stage-header">
-        <span class="stage-pill">✦ Chapter I • Official Findings ✦</span>
-        <h2 class="stage-title">The Joyce Allegations</h2>
-        <p class="stage-subtitle">
-          Look who finally followed instructions. Tap each card—let's go through the evidence against you.
-        </p>
+    <section id="section-hero" class="dr-section hero-composite in-view" data-stage-index="1" aria-label="You are absolutely special to me">
+      <!-- Dominant Cinematic Background Image -->
+      <div class="hero-bg-layer" aria-hidden="true">
+        <img src="assets/hero-couple.jpg" alt="" class="hero-bg-img" loading="eager" />
+        <div class="hero-gradient-scrim"></div>
+        <div class="silk-wave-divider"></div>
       </div>
 
-      <div id="allegations-list" class="allegations-stack">
-        <!-- Populated by script.js -->
-      </div>
+      <div class="dr-container hero-content-grid">
+        <div class="hero-left-column reveal-item">
+          <h2 class="hero-title-group">
+            <span class="hero-you-script">You...</span>
+            <span class="hero-sub-script">are absolutely</span>
+            <span class="hero-sub-script">special to me</span>
+          </h2>
 
-      <div class="playful-whisper-box">
-        <button id="cheeky-poke-btn" class="btn-ghost btn-full" type="button">
-          👀 Tap for an unnecessary observation about Joyce
-        </button>
-        <p id="cheeky-poke-output" class="cheeky-poke-output" role="status" aria-live="polite"></p>
-      </div>
+          <div class="neon-heart-divider" aria-hidden="true">
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
 
-      <div class="stage-status-row">
-        <span id="allegations-progress" class="small-status">0 / 3 cards opened</span>
-        <a href="#stage-3" class="btn-ghost">Keep Going ↓</a>
+          <p class="hero-body-copy">
+            I've only seen you through pictures,<br />
+            but somehow you've managed to get into my head.
+          </p>
+
+          <div class="hero-cta-wrap">
+            <a href="#section-crave" id="hero-keep-reading-btn" class="neon-pill-btn">
+              <span>Keep Reading</span>
+              <span class="btn-heart" aria-hidden="true">♡</span>
+            </a>
+            <span class="down-chevron" aria-hidden="true">⌄</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ===================================================================
-         STAGE 3: ATMOSPHERIC GOTHIC HORROR VISUAL (assets/jay.jpeg)
+         SECTION 2: "I Crave You... ♡"
+         Tilted Deckle-Edge Polaroid Photo on Left + Script & Copy on Right
          =================================================================== -->
-    <section id="stage-3" class="stage" data-stage-index="3" aria-label="Gothic Horror Atmospheric Portrait">
-      <div class="stage-header">
-        <span class="stage-pill">✦ Chapter II • Midnight Editorial ✦</span>
-        <h2 class="stage-title">The Main Character</h2>
-        <p class="stage-subtitle">Dark-fantasy atmosphere. Zero warning signs respected.</p>
-      </div>
+    <section id="section-crave" class="dr-section crave-composite" data-stage-index="2" aria-label="I Crave You">
+      <div class="dr-container crave-grid">
 
-      <div class="atmospheric-jay-stage" id="atmospheric-jay-stage">
-        <div class="jay-atmo-bg-wrap" aria-hidden="true">
-          <img
-            src="assets/jay.jpeg"
-            alt="Joyce atmospheric gothic portrait"
-            id="jay-portrait-img"
-            class="jay-atmo-img"
-            loading="eager"
-          />
-          <div class="jay-burgundy-lighting"></div>
-          <div class="jay-dark-vignette"></div>
+        <!-- Left: Tilted Torn-Edge Polaroid Frame with Masculine Hands & Glowing Heart -->
+        <div class="crave-photo-col reveal-item">
+          <div class="deckle-polaroid-frame" id="crave-polaroid-card" role="button" tabindex="0" aria-label="Tap to reveal secret craving note">
+            <div class="polaroid-inner">
+              <img src="assets/crave-hands.jpg" alt="Close-up of masculine hands on crimson silk" class="crave-polaroid-img" id="crave-polaroid-img" />
+              <div class="polaroid-crimson-wash"></div>
+            </div>
+            <!-- Overlapping Drawn Neon Heart at Bottom-Left Corner -->
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg polaroid-corner-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+            <span class="polaroid-tap-hint">Tap photo ♡</span>
+          </div>
         </div>
 
-        <span class="gothic-corner tl" aria-hidden="true">✦</span>
-        <span class="gothic-corner tr" aria-hidden="true">✦</span>
-        <span class="gothic-corner bl" aria-hidden="true">✦</span>
-        <span class="gothic-corner br" aria-hidden="true">✦</span>
+        <!-- Right: "I Crave You... ♡" Script & Passionate Copy -->
+        <div class="crave-text-col reveal-item">
+          <div class="script-heading-row">
+            <h2 class="neon-script-title">I Crave You...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
 
-        <div class="jay-atmo-top">
-          <span class="editorial-tag">ARCHIVE NO. XIII • FINAL GIRL OR VILLAIN?</span>
-        </div>
-
-        <div class="jay-atmo-overlay-content">
-          <blockquote class="horror-caption-primary" id="horror-caption-1">
-            “POV: The horror movie villain is actually the hottest temptation in the room.”
-          </blockquote>
-
-          <p class="horror-caption-secondary" id="horror-caption-2">
-            Honestly, I'd ignore every single warning sign and walk straight into the dark if you were waiting for me there.
+          <p class="dr-copy-block">
+            Your eyes, that smile, the way you look at the camera...<br />
+            You have absolutely no idea what you do to me.
           </p>
 
-          <div class="horror-interaction-box">
-            <button id="haunted-house-btn" class="btn-secondary btn-full" type="button">
-              <span>🩸 Check My Haunted House Survival Odds</span>
+          <p class="dr-copy-block">
+            I keep imagining what it would feel like<br />
+            to finally have you <strong>standing right in front of me</strong>.
+          </p>
+
+          <p class="crave-script-signoff" id="crave-dynamic-whisper">
+            I want you. So bad.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECTION 3: "What I Love About You... ♡"
+         Glowing Checklist on Left + Sensual Silk Silhouette on Right
+         =================================================================== -->
+    <section id="section-love" class="dr-section love-composite" data-stage-index="3" aria-label="What I Love About You">
+      <!-- Right-side Seamless Atmospheric Image -->
+      <div class="section-right-bleed-bg" aria-hidden="true">
+        <img src="assets/masculine-silk.jpg" alt="" class="bleed-bg-img" />
+        <div class="bleed-left-fade"></div>
+      </div>
+
+      <div class="dr-container love-grid">
+        <div class="love-text-col reveal-item">
+          <div class="script-heading-row">
+            <h2 class="neon-script-title">What I Love About You...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
+
+          <!-- Interactive Glowing Neon Checkmarks List (Tap any item for a deeper confession) -->
+          <ul class="neon-checklist" id="love-checklist" aria-label="Things I find irresistible about you">
+            <li class="neon-check-item active" data-whisper="Every photo you share pulls me right in—those eyes and that smile make me wonder how you'll look staring up at me when we're finally face to face." tabindex="0" role="button">
+              <span class="neon-checkbox" aria-hidden="true">✓</span>
+              <span class="check-text">Your eyes &amp; smile... <strong>they captivate me.</strong></span>
+            </li>
+            <li class="neon-check-item" data-whisper="I catch myself staring at your mouth and imagining what our very first kiss will feel like when there's finally no screen between us." tabindex="0" role="button">
+              <span class="neon-checkbox" aria-hidden="true">✓</span>
+              <span class="check-text">Your soft lips... <strong>I'm dying to taste them.</strong></span>
+            </li>
+            <li class="neon-check-item" data-whisper="Whether you're fully dressed or undressed, every curve of your body makes my hands ache to finally feel you pressed against me." tabindex="0" role="button">
+              <span class="neon-checkbox" aria-hidden="true">✓</span>
+              <span class="check-text">Dressed or undressed... <strong>you drive me crazy.</strong></span>
+            </li>
+            <li class="neon-check-item" data-whisper="I'm counting down the days until I hear your voice drop low and turn into soft, helpless moans right against my ear when we're finally together." tabindex="0" role="button">
+              <span class="neon-checkbox" aria-hidden="true">✓</span>
+              <span class="check-text">Your moans... <strong>the sound I can't wait to hear.</strong></span>
+            </li>
+          </ul>
+
+          <!-- Dynamic Intimate Whisper revealed when she taps a checklist line -->
+          <p id="love-whisper-box" class="interactive-whisper-note" role="status" aria-live="polite">
+            “Every photo you share pulls me right in—those eyes and that smile make me wonder how you'll look staring up at me when we're finally face to face.”
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECTION 4: "I Can't Resist You... ♡"
+         Provocative Messaging + "Stay with Me... ♡" Button + Passionate Kiss Image
+         =================================================================== -->
+    <section id="section-resist" class="dr-section resist-composite" data-stage-index="4" aria-label="I Can't Resist You">
+      <!-- Right-side Passionate Kiss Bleed Image -->
+      <div class="section-right-bleed-bg resist-bg-layer" aria-hidden="true">
+        <img src="assets/passionate-kiss.jpg" alt="" class="bleed-bg-img" />
+        <div class="bleed-left-fade"></div>
+      </div>
+
+      <div class="dr-container resist-grid">
+        <div class="resist-text-col reveal-item">
+          <div class="script-heading-row">
+            <h2 class="neon-script-title">I Can't Resist You...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
+
+          <p class="dr-copy-block">
+            Every picture you share makes me lose control.<br />
+            Every time I imagine your touch, I want more.
+          </p>
+
+          <p class="dr-crimson-highlight">
+            You make me feel <strong>alive</strong>,<br />
+            turned on, and desperate to finally have you close.
+          </p>
+
+          <div class="section-cta-wrap">
+            <button id="stay-with-me-btn" class="neon-pill-btn" type="button">
+              <span>Stay with Me...</span>
+              <span class="btn-heart" aria-hidden="true">♡</span>
             </button>
-            <p id="haunted-house-reply" class="horror-reply-text" role="status" aria-live="polite"></p>
+          </div>
+
+          <p id="resist-secret-reply" class="interactive-whisper-note" role="status" aria-live="polite" hidden></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECTION 5: "I'm Thinking About You... ♡"
+         Candlelight + 3 Circular Neon Icons ("Your Lips", "Your Touch", "Your Body")
+         =================================================================== -->
+    <section id="section-thinking" class="dr-section thinking-composite" data-stage-index="5" aria-label="I'm Thinking About You">
+      <!-- Animated Flickering Pillar Candle on Far Left -->
+      <div class="candle-stage-prop left-candle" aria-hidden="true">
+        <div class="candle-flame"></div>
+        <div class="candle-glow"></div>
+        <div class="candle-wax"></div>
+      </div>
+
+      <div class="dr-container thinking-grid">
+
+        <!-- Left: 3 Glowing Circular Neon-Red Icon Buttons ("Your Lips", "Your Touch", "Your Body") -->
+        <div class="thinking-icons-cluster reveal-item" role="tablist" aria-label="What I'm thinking about">
+          <button class="neon-circle-tab active" data-fantasy="lips" role="tab" aria-selected="true" type="button">
+            <span class="circle-icon-ring">
+              <!-- Neon Lips SVG -->
+              <svg viewBox="0 0 40 26" class="neon-icon-svg">
+                <path d="M3 13C8 6 14 5 20 9C26 5 32 6 37 13C31 11 25 13 20 13C15 13 9 11 3 13Z" />
+                <path d="M3 13C9 21 15 23 20 23C25 23 31 21 37 13C30 15 25 14 20 14C15 14 10 15 3 13Z" />
+              </svg>
+            </span>
+            <span class="circle-tab-label">Your Lips</span>
+          </button>
+
+          <button class="neon-circle-tab" data-fantasy="touch" role="tab" aria-selected="false" type="button">
+            <span class="circle-icon-ring">
+              <!-- Neon Heart SVG -->
+              <svg viewBox="0 0 36 34" class="neon-icon-svg">
+                <path d="M18 29C18 29 4 19.5 4 10.5C4 6 7.8 2.8 12 2.8C15 2.8 17.2 4.5 18 7C18.8 4.5 21 2.8 24 2.8C28.2 2.8 32 6 32 10.5C32 19.5 18 29 18 29Z" />
+              </svg>
+            </span>
+            <span class="circle-tab-label">Your Touch</span>
+          </button>
+
+          <button class="neon-circle-tab circle-tab-bottom" data-fantasy="body" role="tab" aria-selected="false" type="button">
+            <span class="circle-icon-ring">
+              <!-- Neon Flame SVG -->
+              <svg viewBox="0 0 32 38" class="neon-icon-svg">
+                <path d="M16 3C16 3 27 12 27 23C27 30 22 35 16 35C10 35 5 30 5 23C5 18 8 13 11 10C10 15 13 17 15 14C17 11 16 6 16 3Z" />
+                <path d="M16 21C18.5 23.5 19.5 26 19.5 28.5C19.5 31 18 33 16 33C14 33 12.5 31 12.5 28.5C12.5 26 13.5 23.5 16 21Z" />
+              </svg>
+            </span>
+            <span class="circle-tab-label">Your Body</span>
+          </button>
+        </div>
+
+        <!-- Right: "I'm Thinking About You... ♡" Copy & "Come Closer ♡" Button -->
+        <div class="thinking-text-col reveal-item">
+          <div class="script-heading-row">
+            <h2 class="neon-script-title">I'm Thinking About You...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
+
+          <p class="dr-copy-block">
+            Your touch, your <strong>voice</strong>, your <strong>kisses</strong>...<br />
+            I can't stop imagining <strong>every single one</strong>.
+          </p>
+
+          <p class="dr-copy-block" id="thinking-dynamic-copy">
+            Right now, I just want to finally pull you close,<br />
+            feel your heat beside me, and discover our chemistry in person.
+          </p>
+
+          <div class="section-cta-wrap">
+            <button id="come-closer-btn" class="neon-pill-btn" type="button">
+              <span>Come Closer</span>
+              <span class="btn-heart" aria-hidden="true">♡</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECTION 6: "The Truth is..."
+         Closing Confession + "Let's Make It Real ♡" + Lipstick Kiss & Signature
+         =================================================================== -->
+    <section id="section-truth" class="dr-section truth-composite" data-stage-index="6" aria-label="The Truth Is">
+      <!-- Bottom Left Candle & Roses Prop -->
+      <div class="candle-stage-prop truth-candle" aria-hidden="true">
+        <div class="candle-flame"></div>
+        <div class="candle-glow"></div>
+        <div class="candle-wax"></div>
+      </div>
+
+      <div class="dr-container truth-grid">
+        <div class="truth-center-col reveal-item">
+          <h2 class="neon-script-title truth-title">The Truth is...</h2>
+
+          <div class="truth-line-divider" aria-hidden="true">
+            <span class="divider-line"></span>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg small-heart">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+            <span class="divider-line"></span>
+          </div>
+
+          <p class="dr-copy-block truth-copy">
+            I've seen you. You've captivated me. I keep imagining you.<br />
+            And I can't hide how badly I'm looking forward to experiencing you in person.
+          </p>
+
+          <div class="truth-cta-wrap">
+            <button id="make-it-real-btn" class="neon-pill-btn btn-large-glow" type="button">
+              <span>Let's Make It Real</span>
+              <span class="btn-heart" aria-hidden="true">♡</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Crimson Lipstick Kiss Mark & Handwritten Signature ("I want you... Always. - Me ♡") -->
+        <div class="truth-signature-aside reveal-item" aria-label="Signed with a kiss">
+          <svg viewBox="0 0 90 62" class="lipstick-kiss-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="kissGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff2a55" />
+                <stop offset="55%" stop-color="#b80d34" />
+                <stop offset="100%" stop-color="#5e0419" />
+              </linearGradient>
+            </defs>
+            <path d="M6 31C16 14 29 11 45 21C61 11 74 14 84 31C71 26 57 29 45 29C33 29 19 26 6 31Z" fill="url(#kissGrad)" opacity="0.92" />
+            <path d="M8 33C20 50 33 54 45 54C57 54 70 50 82 33C68 38 56 36 45 36C34 36 22 38 8 33Z" fill="url(#kissGrad)" opacity="0.88" />
+          </svg>
+          <p class="handwritten-signature">
+            I want you...<br />
+            Always.<br />
+            <span>- Me ♡</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         CONTINUOUS FULL-BLEED DARK-ROMANCE LOWER CHAPTERS & GRAND CLIMAX
+         100% Visual Consistency: Every section features cinematic bedroom
+         imagery, crimson silk lighting, candlelight, and neon script typography.
+         =================================================================== -->
+
+    <!-- ===================================================================
+         SECTION 7 (STAGE 2): "Why It's Always You... ♡"
+         Full-bleed Candlelit Embrace Backdrop + Translucent Crimson Confessions
+         =================================================================== -->
+    <section id="stage-2" class="dr-section stage vault-composite" data-stage-index="2" aria-label="Personal Confessions for Jay">
+      <div class="section-full-atmo-bg" aria-hidden="true">
+        <img src="assets/vault-embrace.jpg" alt="" class="atmo-cover-img" loading="lazy" />
+        <div class="atmo-crimson-scrim"></div>
+        <div class="silk-wave-divider"></div>
+      </div>
+
+      <div class="candle-stage-prop right-candle" aria-hidden="true">
+        <div class="candle-flame"></div>
+        <div class="candle-glow"></div>
+        <div class="candle-wax"></div>
+      </div>
+
+      <div class="dr-container vault-section-inner">
+        <div class="stage-header">
+          <span class="stage-pill">✦ Private Confessions • Exclusively For Jay ✦</span>
+          <div class="script-heading-row centered-heading-row">
+            <h2 class="neon-script-title">Why It's Always You...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
+          <p class="dr-copy-block">
+            Tap each confession below—because I've only ever seen you through photographs, yet you've already found your way completely under my skin.
+          </p>
+        </div>
+
+        <div id="allegations-list" class="allegations-stack"></div>
+
+        <!-- Secret Personal Lockbox (Unlocks as she opens the 3 confessions or taps to peek) -->
+        <div id="secret-lockbox-card" class="secret-lockbox-card">
+          <div class="lockbox-header">
+            <span id="lockbox-status-icon" class="lockbox-icon" aria-hidden="true">🔒</span>
+            <span id="lockbox-status-title" class="lockbox-title">Unfiltered Personal Note (Open all 3 cards above or tap to peek)</span>
+          </div>
+          <p id="cheeky-poke-output" class="cheeky-poke-output" hidden>
+            “I haven't even stood in the same room with you yet, Jay, and look at the hold you have on me. Between your eyes, that dangerous smile, your creative side when you're sketching, and a body that looks tempting whether dressed or undressed—I am counting down the days until I finally get to experience all of you in person.”
+          </p>
+          <button id="cheeky-poke-btn" class="btn-text-link" type="button">
+            Unlock &amp; read personal note now ♡
+          </button>
+        </div>
+
+        <div class="stage-status-row">
+          <span id="allegations-progress" class="small-status">0 / 3 confessions opened</span>
+          <a href="#stage-3" class="neon-pill-btn">See Your Portrait ♡</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECTION 8 (STAGE 3): HER ACTUAL PHOTOGRAPH (assets/jay.jpeg)
+         Progressive 3-Chapter Story Slider ("When We Finally Meet")
+         =================================================================== -->
+    <section id="stage-3" class="dr-section stage jay-composite-section" data-stage-index="3" aria-label="Jay Atmospheric Portrait">
+      <div class="section-full-atmo-bg" aria-hidden="true">
+        <img src="assets/temptation-silk.jpg" alt="" class="atmo-cover-img" loading="lazy" />
+        <div class="atmo-crimson-scrim"></div>
+      </div>
+
+      <div class="dr-container vault-section-inner">
+        <div class="stage-header">
+          <span class="stage-pill">✦ Late-Night Obsession • Your Photographs ✦</span>
+          <div class="script-heading-row centered-heading-row">
+            <h2 class="neon-script-title">Impossible To Resist...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="atmospheric-jay-stage" id="atmospheric-jay-stage" data-story-chapter="1">
+          <div class="jay-atmo-bg-wrap" aria-hidden="true">
+            <img src="assets/jay.jpeg" alt="Jay atmospheric dark romance portrait" id="jay-portrait-img" class="jay-atmo-img" loading="lazy" />
+            <div class="jay-burgundy-lighting"></div>
+            <div class="jay-dark-vignette"></div>
+          </div>
+
+          <span class="gothic-corner tl" aria-hidden="true">✦</span>
+          <span class="gothic-corner tr" aria-hidden="true">✦</span>
+          <span class="gothic-corner bl" aria-hidden="true">✦</span>
+          <span class="gothic-corner br" aria-hidden="true">✦</span>
+
+          <div class="jay-atmo-top">
+            <span class="editorial-tag">WHEN WE FINALLY MEET • THREE SCENES</span>
+          </div>
+
+          <div class="jay-atmo-overlay-content">
+            <!-- 3-Beat Progressive Story Selector over her Portrait -->
+            <div class="distance-story-tabs" role="tablist" aria-label="When we finally meet story">
+              <button class="distance-tab active" data-chapter="1" role="tab" aria-selected="true" type="button">
+                01. First Sight
+              </button>
+              <button class="distance-tab" data-chapter="2" role="tab" aria-selected="false" type="button">
+                02. First Touch
+              </button>
+              <button class="distance-tab" data-chapter="3" role="tab" aria-selected="false" type="button">
+                03. First Night
+              </button>
+            </div>
+
+            <blockquote class="horror-caption-primary" id="horror-caption-1">
+              “I've stared at your pictures a hundred times, but seeing you standing right in front of me is going to hit completely different.”
+            </blockquote>
+
+            <p class="horror-caption-secondary" id="haunted-house-reply" role="status" aria-live="polite">
+              Scene I — First Sight: The moment I finally see you in person, I don't think I'll be able to hide how badly I've been looking forward to it. Taking in your eyes, that smile, and your body up close before closing the last inch of space between us.
+            </p>
+
+            <div class="horror-interaction-box">
+              <button id="haunted-house-btn" class="neon-pill-btn btn-full" type="button">
+                <span id="haunted-btn-label">Next Scene: The First Touch ♡</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ===================================================================
-         STAGE 4: THE EYES PHOTOGRAPH ATMOSPHERIC MOMENT (assets/eyes.jpeg)
+         SECTION 9 (STAGE 4): HER EYES PHOTOGRAPH (assets/eyes.jpeg)
          =================================================================== -->
-    <section id="stage-4" class="stage" data-stage-index="4" aria-label="Those Eyes Atmospheric Moment">
-      <div class="stage-header">
-        <span class="stage-pill">✦ Chapter III • Between the Lines ✦</span>
-        <h2 class="stage-title">That Particular Picture</h2>
-        <p class="stage-subtitle">Watch closely as you read.</p>
+    <section id="stage-4" class="dr-section stage eyes-composite-section" data-stage-index="4" aria-label="Those Eyes Atmospheric Moment">
+      <div class="section-full-atmo-bg" aria-hidden="true">
+        <img src="assets/passionate-kiss.jpg" alt="" class="atmo-cover-img" loading="lazy" />
+        <div class="atmo-crimson-scrim"></div>
       </div>
 
-      <div class="eyes-atmospheric-sanctuary" id="eyes-atmospheric-sanctuary" data-reveal-level="1">
-        <div class="eyes-bg-layer" id="eyes-bg-layer" aria-hidden="true">
-          <img
-            src="assets/eyes.jpeg"
-            alt=""
-            id="eyes-photo-img"
-            class="eyes-atmo-bg-img"
-            loading="eager"
-          />
-          <div class="eyes-atmo-burgundy-wash"></div>
-          <div class="eyes-atmo-readability-scrim"></div>
+      <div class="dr-container vault-section-inner">
+        <div class="stage-header">
+          <span class="stage-pill">✦ The Look That Captivates Me ✦</span>
+          <div class="script-heading-row centered-heading-row">
+            <h2 class="neon-script-title">That Particular Picture...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
         </div>
 
-        <div class="eyes-foreground-content">
-          <div class="eyes-whisper-tag">✦ A Page From Memory ✦</div>
+        <div class="eyes-atmospheric-sanctuary" id="eyes-atmospheric-sanctuary" data-reveal-level="1">
+          <div class="eyes-bg-layer" id="eyes-bg-layer" aria-hidden="true">
+            <img src="assets/eyes.jpeg" alt="" id="eyes-photo-img" class="eyes-atmo-bg-img" loading="lazy" />
+            <div class="eyes-atmo-burgundy-wash"></div>
+            <div class="eyes-atmo-readability-scrim"></div>
+          </div>
 
-          <div class="eyes-narrative-stack" id="eyes-narrative-stack" aria-live="polite">
-            <p class="eyes-line eyes-line-1" id="eyes-line-1">
-              “There's a particular picture of yours...”
+          <div class="eyes-foreground-content">
+            <div class="eyes-whisper-tag">✦ Burned Into My Memory ✦</div>
+
+            <div class="eyes-narrative-stack" id="eyes-narrative-stack" aria-live="polite">
+              <p class="eyes-line eyes-line-1" id="eyes-line-1">
+                “There's a particular picture of yours that I can't stop coming back to...”
+              </p>
+              <p class="eyes-line eyes-line-2" id="eyes-line-2" hidden>
+                I've only ever seen those eyes through a screen, yet one look at them and I'm imagining what it will feel like when you're finally beneath me in the dark—looking up at me just like that in real life.
+              </p>
+              <p class="eyes-line eyes-line-3" id="eyes-line-3" hidden>
+                It's getting harder to contain what you do to me. Go ahead and bite your lip—now tell me how you want our first night together to unfold below.
+              </p>
+            </div>
+
+            <div class="eyes-controls">
+              <button id="eyes-reveal-btn" class="neon-pill-btn btn-full" type="button">
+                <span id="eyes-reveal-btn-text">Tap to let me go further...</span>
+                <span aria-hidden="true">♡</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECTION 10 (STAGE 5): "PICK YOUR TEMPTATION" INTERACTIVE EXPERIENCE
+         Replaces the crossword with 3 seductive choice cards:
+         - Slow & Teasing
+         - Close & Intimate
+         - Surprise Me
+         =================================================================== -->
+    <section id="stage-5" class="dr-section stage temptation-composite-section" data-stage-index="5" aria-label="Pick Your Temptation">
+      <div class="section-full-atmo-bg" aria-hidden="true">
+        <img src="assets/temptation-silk.jpg" alt="" class="atmo-cover-img" loading="lazy" />
+        <div class="atmo-crimson-scrim"></div>
+      </div>
+
+      <div class="candle-stage-prop left-candle" aria-hidden="true">
+        <div class="candle-flame"></div>
+        <div class="candle-glow"></div>
+        <div class="candle-wax"></div>
+      </div>
+
+      <div class="dr-container vault-section-inner">
+        <div class="stage-header">
+          <span class="stage-pill">✦ When We Finally Meet • Your Choice ✦</span>
+          <div class="script-heading-row centered-heading-row">
+            <h2 class="neon-script-title">Pick Your Temptation...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
+          <p class="dr-copy-block">
+            When the wait is finally over and you're standing right in front of me for the very first time... how do you want me to start?
+          </p>
+        </div>
+
+        <div class="crimson-glass-panel temptation-experience-card">
+          <div class="cw-top-bar">
+            <div class="cw-progress-info">
+              <span class="cw-progress-title">Fantasies Unlocked</span>
+              <span id="temptation-progress-count" class="cw-progress-badge">0 / 3 Explored</span>
+            </div>
+            <div class="cw-mini-bar" aria-hidden="true">
+              <div id="temptation-progress-fill" class="cw-mini-fill"></div>
+            </div>
+          </div>
+
+          <!-- 3 Interactive Choice Cards: Slow & Teasing | Close & Intimate | Surprise Me -->
+          <div id="temptation-cards-grid" class="temptation-cards-grid" role="group" aria-label="Temptation choices">
+            <button type="button" class="temptation-choice-card" data-temptation="slow" aria-pressed="false">
+              <div class="temptation-card-top">
+                <span class="temptation-card-icon" aria-hidden="true">🕯️</span>
+                <span class="temptation-card-tag">Option I</span>
+              </div>
+              <h3 class="temptation-card-title">Slow &amp; Teasing</h3>
+              <p class="temptation-card-sub">Savoring our very first touch in the candlelight until you're begging me not to stop.</p>
+            </button>
+
+            <button type="button" class="temptation-choice-card" data-temptation="close" aria-pressed="false">
+              <div class="temptation-card-top">
+                <span class="temptation-card-icon" aria-hidden="true">🥀</span>
+                <span class="temptation-card-tag">Option II</span>
+              </div>
+              <h3 class="temptation-card-title">Close &amp; Intimate</h3>
+              <p class="temptation-card-sub">Finally skin against skin, our first deep kiss, and discovering our chemistry all night.</p>
+            </button>
+
+            <button type="button" class="temptation-choice-card" data-temptation="surprise" aria-pressed="false">
+              <div class="temptation-card-top">
+                <span class="temptation-card-icon" aria-hidden="true">🔥</span>
+                <span class="temptation-card-tag">Option III</span>
+              </div>
+              <h3 class="temptation-card-title">Surprise Me</h3>
+              <p class="temptation-card-sub">Hand over control completely and let me turn every fantasy I've imagined into reality.</p>
+            </button>
+          </div>
+
+          <!-- Active Personalized Scenario Theatre -->
+          <div id="temptation-scenario-stage" class="temptation-scenario-stage" role="status" aria-live="polite" hidden>
+            <div class="scenario-stage-header">
+              <span id="scenario-kicker" class="stage-pill">✦ Selected Fantasy ✦</span>
+              <h4 id="scenario-title" class="scenario-title"></h4>
+            </div>
+
+            <p id="scenario-lead-text" class="scenario-body-text"></p>
+            <p id="scenario-escalated-text" class="scenario-escalated-text" hidden></p>
+
+            <div class="scenario-actions">
+              <button id="scenario-escalate-btn" class="neon-pill-btn btn-full" type="button">
+                <span id="scenario-escalate-label">Take It Further... ♡</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Unlocked after exploring temptations -->
+          <div id="temptation-reward-banner" class="cw-reward-banner" hidden>
+            <span class="reward-sparkle" aria-hidden="true">✦ 🔥 ✦</span>
+            <p id="temptation-reward-text" class="reward-quote">
+              Look at you exploring all three. When we finally meet in person, one option was never going to be enough for us anyway.
             </p>
+            <a href="#stage-6" class="neon-pill-btn btn-full">Read What You Really Do To Me ♡</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <p class="eyes-line eyes-line-2" id="eyes-line-2" hidden>
-              I don't know if you realise what your eyes do to me, Joyce, but I've genuinely found myself getting lost in them—imagining exactly how they'd look staring up at me in the dark.
-            </p>
+    <!-- ===================================================================
+         SECTION 11 (STAGE 6): DEEP INTIMATE CONFESSION OVER CANDLELIT SILK
+         Interactive Mood Pills + Progressive Storytelling
+         =================================================================== -->
+    <section id="stage-6" class="dr-section stage confession-composite-section" data-stage-index="6" aria-label="How Badly I Crave You">
+      <div class="section-full-atmo-bg" aria-hidden="true">
+        <img src="assets/masculine-silk.jpg" alt="" class="atmo-cover-img" loading="lazy" />
+        <div class="atmo-crimson-scrim"></div>
+      </div>
 
-            <p class="eyes-line eyes-line-3" id="eyes-line-3" hidden>
-              Look at you, being all shy now. Go ahead and blush, pretty girl. I meant every word.
+      <div class="dr-container vault-section-inner">
+        <div class="stage-header">
+          <span class="stage-pill">✦ Raw &amp; Unfiltered ✦</span>
+          <div class="script-heading-row centered-heading-row">
+            <h2 class="neon-script-title">Both The Heat &amp; The Heart...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="crimson-glass-panel heartfelt-card">
+          <div class="here-for-you-banner">
+            <span class="here-banner-title">✦ Tap Any Thought Below Or Read Piece By Piece ✦</span>
+            <div class="here-pills-grid" id="here-pills-grid">
+              <button type="button" class="here-pill active" data-para-index="0">Captivated by your photos</button>
+              <button type="button" class="here-pill" data-para-index="1">Imagining your touch</button>
+              <button type="button" class="here-pill" data-para-index="2">Dressed or undressed</button>
+              <button type="button" class="here-pill" data-para-index="3">Your voice &amp; moans</button>
+              <button type="button" class="here-pill" data-para-index="4">Unfiltered with me</button>
+              <button type="button" class="here-pill" data-para-index="5">Discovering us in person</button>
+            </div>
+          </div>
+
+          <div id="heartfelt-paragraphs" class="heartfelt-stack" aria-live="polite"></div>
+
+          <div id="heartfelt-ending" class="heartfelt-ending" hidden>
+            <p class="ending-punchline" id="heartfelt-punchline">
+              Now take a slow breath, uncross your legs, and try not to think too hard about what happens the day we're finally in the same room.
             </p>
           </div>
 
-          <div class="eyes-controls">
-            <button id="eyes-reveal-btn" class="btn-primary btn-full" type="button">
-              <span id="eyes-reveal-btn-text">Tap to keep reading...</span>
-              <span aria-hidden="true">✦</span>
+          <div class="heartfelt-controls">
+            <button id="next-paragraph-btn" class="neon-pill-btn btn-full" type="button">
+              <span>Tap for Next Part (1 / 6)</span>
+              <span aria-hidden="true">♡</span>
+            </button>
+            <button id="show-all-paragraphs-btn" class="btn-text-link" type="button">
+              Show full confession at once
             </button>
           </div>
         </div>
@@ -247,219 +779,216 @@
     </section>
 
     <!-- ===================================================================
-         STAGE 5: A LITTLE GAME (4-Answer Mobile Crossword)
+         SECTION 12 (STAGE 7): AFTER-HOURS MOOD TUNER
+         Distinct 4-Mood Intimate Selector ("What Do You Need Tonight?")
          =================================================================== -->
-    <section id="stage-5" class="stage" data-stage-index="5" aria-label="A Little Game: The Joyce Crossword">
-      <div class="stage-header">
-        <span class="stage-pill">✦ Chapter IV • Quick Brain Check ✦</span>
-        <h2 class="stage-title">A Little Game</h2>
-        <p class="stage-subtitle">
-          Four clues about things you love. Hints are right beside every answer.
-        </p>
+    <section id="stage-7" class="dr-section stage pulse-composite-section" data-stage-index="7" aria-label="Late-Night Craving Selector">
+      <div class="section-full-atmo-bg" aria-hidden="true">
+        <img src="assets/after-hours-bed.jpg" alt="" class="atmo-cover-img" loading="lazy" />
+        <div class="atmo-crimson-scrim"></div>
       </div>
 
-      <div class="gift-card crossword-card">
-        <div class="cw-top-bar">
-          <div class="cw-progress-info">
-            <span class="cw-progress-title">Crossword Progress</span>
-            <span id="cw-progress-count" class="cw-progress-badge">0 / 4 Solved</span>
-          </div>
-          <div class="cw-mini-bar" aria-hidden="true">
-            <div id="cw-progress-fill" class="cw-mini-fill"></div>
-          </div>
-        </div>
-
-        <div class="cw-visual-preview" id="cw-visual-preview" aria-label="Connected crossword preview"></div>
-        <div id="cw-entries-list" class="cw-entries-stack"></div>
-
-        <div class="cw-actions">
-          <button id="cw-check-btn" class="btn-primary btn-full" type="button">
-            Check Answers ✦
-          </button>
-        </div>
-
-        <p id="cw-feedback-msg" class="cw-feedback" role="status" aria-live="polite"></p>
-
-        <div id="cw-reward-banner" class="cw-reward-banner" hidden>
-          <span class="reward-sparkle" aria-hidden="true">✦ 👑 ✦</span>
-          <p id="cw-reward-text" class="reward-quote">
-            Okay genius. You did it. Your reward is knowing you're still annoying. Congratulations.
-          </p>
-          <a href="#stage-6" class="btn-secondary btn-full">Continue to The Real Message ↓</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         STAGE 6: THE MESSAGE I ACTUALLY WANTED YOU TO READ
-         =================================================================== -->
-    <section id="stage-6" class="stage" data-stage-index="6" aria-label="The Message I Actually Wanted You to Read">
-      <div class="stage-header">
-        <span class="stage-pill">✦ Chapter V • Even On Your Terrible Days ✦</span>
-        <h2 class="stage-title">You Still Have Someone Here</h2>
-        <p class="stage-subtitle">The message I actually wanted you to read. One piece at a time.</p>
+      <div class="candle-stage-prop right-candle" aria-hidden="true">
+        <div class="candle-flame"></div>
+        <div class="candle-glow"></div>
+        <div class="candle-wax"></div>
       </div>
 
-      <div class="gift-card heartfelt-card">
-        <div class="here-for-you-banner">
-          <span class="here-banner-title">✦ No Conditions • No Explanations Owed ✦</span>
-          <div class="here-pills-grid" id="here-pills-grid">
-            <span class="here-pill">Here when you're happy</span>
-            <span class="here-pill">Here when you're struggling</span>
-            <span class="here-pill">Here when you can't explain</span>
-            <span class="here-pill">Here when you want to cry</span>
-            <span class="here-pill">Here when you need distraction</span>
-            <span class="here-pill">Here for a random text</span>
+      <div class="dr-container vault-section-inner">
+        <div class="stage-header">
+          <span class="stage-pill">✦ After-Hours Dial ✦</span>
+          <div class="script-heading-row centered-heading-row">
+            <h2 class="neon-script-title">What Do You Need Tonight?...</h2>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg inline-heart" aria-hidden="true">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
           </div>
-        </div>
-
-        <div id="heartfelt-paragraphs" class="heartfelt-stack" aria-live="polite"></div>
-
-        <div id="heartfelt-ending" class="heartfelt-ending" hidden>
-          <p class="ending-punchline" id="heartfelt-punchline">
-            Now enough emotional damage. Go eat something.
+          <p class="dr-copy-block">
+            Tell me where your head is at right now, and let me answer properly.
           </p>
         </div>
 
-        <div class="heartfelt-controls">
-          <button id="next-paragraph-btn" class="btn-primary btn-full" type="button">
-            <span>Tap for Next Part (1 / 6)</span>
-            <span aria-hidden="true">✦</span>
-          </button>
-          <button id="show-all-paragraphs-btn" class="btn-text-link" type="button">
-            Show full message at once
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         STAGE 7: YOUR EMERGENCY BUTTON
-         =================================================================== -->
-    <section id="stage-7" class="stage" data-stage-index="7" aria-label="Your Emergency Comfort Button">
-      <div class="stage-header">
-        <span class="stage-pill">✦ Chapter VI • Whenever You Need Me ✦</span>
-        <h2 class="stage-title">Your Emergency Button</h2>
-        <p class="stage-subtitle">Because even on your worst days, you don't have to go through them alone.</p>
-      </div>
-
-      <div class="gift-card emergency-card">
-        <button id="emergency-comfort-btn" class="btn-emergency" type="button">
-          <span class="emergency-icon" aria-hidden="true">🌙</span>
-          <span class="emergency-label">Having one of those days?</span>
-          <span class="emergency-sub">Tap for a reminder that I'm here</span>
-        </button>
-
-        <div id="emergency-message-box" class="emergency-message-box" role="status" aria-live="polite">
-          <p id="emergency-message-text" class="emergency-quote">
-            Tap the button above whenever your head feels loud or the day feels heavy.
-          </p>
-          <span id="emergency-tap-counter" class="emergency-meta">Always in your corner across any time zone</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         STAGE 8: THE FINAL LITTLE SURPRISE & "SEND MIDNIGHT SPARKLES ✨"
-         =================================================================== -->
-    <section id="stage-8" class="stage" data-stage-index="8" aria-label="The Final Little Surprise">
-      <div class="stage-header">
-        <span class="stage-pill">✦ Chapter VII • The Final Page ✦</span>
-        <h2 class="stage-title">The Final Little Surprise</h2>
-        <p class="stage-subtitle">A sealed page from a dark-romance novel, written exclusively for Joyce.</p>
-      </div>
-
-      <!-- Sealed State -->
-      <div id="letter-sealed-box" class="gift-card letter-sealed-box">
-        <button id="unfold-letter-btn" class="wax-seal-btn" type="button" aria-label="Break wax seal and unfold letter">
-          <img src="assets/wax-seal.svg" alt="Crimson Wax Seal J" class="seal-graphic" />
-        </button>
-        <h3 class="seal-title">Sealed For Joyce</h3>
-        <p class="seal-hint">Tap the crimson wax seal to break it and unfold your final letter.</p>
-        <button id="unfold-letter-cta" class="btn-primary btn-full" type="button">
-          Unfold Final Letter ✦
-        </button>
-      </div>
-
-      <!-- Unfolded Dark-Romance Novel Page -->
-      <article id="letter-unfolded-box" class="novel-page-card" hidden>
-        <div class="novel-page-inner">
-          <div class="novel-header">
-            <span class="novel-chapter">Chapter ∞ • Ex Libris Joyce</span>
-            <span class="novel-ornament" aria-hidden="true">☽ ✦ ☾</span>
+        <div class="crimson-glass-panel emergency-card">
+          <!-- 4 Mood Chips -->
+          <div class="night-mood-grid" id="night-mood-grid" role="group" aria-label="Choose your late-night mood">
+            <button type="button" class="night-mood-chip active" data-mood="desired">
+              🔥 Make me blush
+            </button>
+            <button type="button" class="night-mood-chip" data-mood="heavy">
+              🌧️ Rough day, hold me
+            </button>
+            <button type="button" class="night-mood-chip" data-mood="sleepless">
+              🌙 3 AM &amp; restless
+            </button>
+            <button type="button" class="night-mood-chip" data-mood="miss">
+              🥀 Craving our first touch
+            </button>
           </div>
 
-          <div id="final-letter-content" class="novel-body"></div>
-
-          <div class="novel-footer">
-            <p id="final-credits-line" class="novel-credits">
-              Made with genuine care, a little teasing and an unreasonable amount of coding.
+          <div id="emergency-message-box" class="emergency-message-box" role="status" aria-live="polite">
+            <p id="emergency-message-text" class="emergency-quote">
+              “Close your eyes for five seconds and imagine what it's going to feel like the first time my hands slide up your waist and pull you flush against me.”
             </p>
+            <span id="emergency-tap-counter" class="emergency-meta">Private line • Always open for Jay</span>
+          </div>
+
+          <button id="emergency-comfort-btn" class="neon-pill-btn btn-full" type="button" style="margin-top: 14px;">
+            <span>Whisper Another For This Mood ♡</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SECTION 13 (STAGE 8): REDESIGNED GRAND CLIMAX FINALE
+         Dramatic Romantic Imagery • Deep Crimson Lighting • Unforgettable Vow
+         + Separate Optional Chocolate Bonus Easter Egg
+         =================================================================== -->
+    <section id="stage-8" class="dr-section stage grand-climax-section" data-stage-index="8" aria-label="The Climax Finale">
+      <!-- Dramatic Full-Bleed Climax Photography -->
+      <div class="climax-bg-layer" aria-hidden="true">
+        <img src="assets/climax-finale-couple.jpg" alt="" class="climax-bg-img" loading="lazy" />
+        <div class="climax-crimson-lighting"></div>
+        <div class="climax-vignette-scrim"></div>
+      </div>
+
+      <!-- Twin Flickering Pillar Candles Framing the Bottom Climax -->
+      <div class="candle-stage-prop left-candle" aria-hidden="true">
+        <div class="candle-flame"></div>
+        <div class="candle-glow"></div>
+        <div class="candle-wax"></div>
+      </div>
+      <div class="candle-stage-prop right-candle" aria-hidden="true">
+        <div class="candle-flame"></div>
+        <div class="candle-glow"></div>
+        <div class="candle-wax"></div>
+      </div>
+
+      <div class="dr-container climax-container">
+        <!-- Climax Hero Callout -->
+        <div class="climax-header-group">
+          <span class="stage-pill">✦ The Climax • When We Finally Meet ✦</span>
+          <h2 class="climax-title-stack">
+            <span class="climax-white-script">Until You're...</span>
+            <span class="climax-neon-script">In My Arms, Jay</span>
+          </h2>
+
+          <div class="truth-line-divider" aria-hidden="true">
+            <span class="divider-line"></span>
+            <svg viewBox="0 0 36 34" class="drawn-heart-svg small-heart">
+              <path d="M18 30C18 30 4 20 4 10.5C4 5.8 7.8 2.5 12 2.5C15 2.5 17.2 4.3 18 6.8C18.8 4.3 21 2.5 24 2.5C28.2 2.5 32 5.8 32 10.5C32 20 18 30 18 30Z" />
+            </svg>
+            <span class="divider-line"></span>
+          </div>
+
+          <p class="climax-vow-lead">
+            Every picture you've shared and every word on this page is only the prelude.<br />
+            The real story begins the moment I finally have you standing right in front of me—when imagination turns into touch, and we discover our chemistry in person.
+          </p>
+        </div>
+
+        <!-- Sealed Crimson Wax Letter -->
+        <div id="letter-sealed-box" class="crimson-glass-panel letter-sealed-box climax-seal-card">
+          <button id="unfold-letter-btn" class="wax-seal-btn" type="button" aria-label="Break wax seal and unfold letter">
+            <img src="assets/wax-seal.svg" alt="Crimson Wax Seal J" class="seal-graphic" />
+          </button>
+          <h3 class="seal-title">The Final Midnight Confession</h3>
+          <p class="seal-hint">Sealed in crimson wax exclusively for Jay. Tap to break the seal.</p>
+          <button id="unfold-letter-cta" class="neon-pill-btn btn-large-glow btn-full" type="button">
+            <span>Break Wax Seal &amp; Read</span>
+            <span class="btn-heart" aria-hidden="true">♡</span>
+          </button>
+        </div>
+
+        <!-- Unfolded Dark-Romance Novel Page -->
+        <article id="letter-unfolded-box" class="novel-page-card climax-unfolded-card" hidden>
+          <div class="novel-page-inner">
+            <div class="novel-header">
+              <span class="novel-chapter">Chapter ∞ • Written In The Dark For Jay</span>
+              <span class="novel-ornament" aria-hidden="true">☽ ♡ ☾</span>
+            </div>
+
+            <div id="final-letter-content" class="novel-body"></div>
+
+            <div class="novel-footer">
+              <p id="final-credits-line" class="novel-credits">
+                Made with genuine care, shameless desire, and an unreasonable amount of coding.
+              </p>
+            </div>
+          </div>
+
+          <div class="novel-actions">
+            <button id="send-midnight-sparkles-btn" class="neon-pill-btn btn-full btn-large-glow" type="button">
+              <span>Enter Midnight Finale ✨</span>
+            </button>
+            <button id="bonus-chocolate-easter-egg-btn" class="btn-secondary btn-full" type="button">
+              <span>🍫 Bonus Easter Egg: Sweet Tooth Delivery</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Bottom Climax Signature & Lipstick Kiss Mark -->
+        <div class="climax-closing-altar">
+          <p class="climax-closing-whisper">
+            “Close your eyes tonight knowing someone is counting down the days until he can finally feel every inch of you in person.”
+          </p>
+
+          <div class="climax-kiss-row">
+            <svg viewBox="0 0 90 62" class="lipstick-kiss-svg" aria-hidden="true">
+              <path d="M6 31C16 14 29 11 45 21C61 11 74 14 84 31C71 26 57 29 45 29C33 29 19 26 6 31Z" fill="url(#kissGrad)" opacity="0.95" />
+              <path d="M8 33C20 50 33 54 45 54C57 54 70 50 82 33C68 38 56 36 45 36C34 36 22 38 8 33Z" fill="url(#kissGrad)" opacity="0.9" />
+            </svg>
+            <div class="handwritten-signature">
+              Yours in the dark...<br />
+              Always.<br />
+              <span>- Me ♡</span>
+            </div>
           </div>
         </div>
 
-        <div class="novel-actions">
-          <button id="send-midnight-sparkles-btn" class="btn-primary btn-full btn-sparkle-cta" type="button">
-            <span>Send Midnight Sparkles ✨</span>
-          </button>
-        </div>
-      </article>
+      </div>
     </section>
 
   </main>
 
   <!-- =====================================================================
        CINEMATIC FINAL SCENE (Full-Screen Sequence)
-       Triggered when Joyce presses "Send Midnight Sparkles ✨"
        ===================================================================== -->
-  <section
-    id="cinematic-ending-scene"
-    class="cinematic-ending-scene"
-    aria-label="Cinematic Final Scene"
-    hidden
-  >
-    <!-- Main Cinematic Stage (Fades to black during the final fade-out phase) -->
+  <section id="cinematic-ending-scene" class="cinematic-ending-scene" aria-label="Cinematic Final Scene" hidden>
     <div id="cinematic-stage-inner" class="cinematic-stage-inner">
 
-      <!-- Playful Floating Status Toast ("Chocolate delivery incoming...", "Joyce.exe...") -->
       <div id="cinematic-floating-toast" class="cinematic-floating-toast" aria-live="polite"></div>
 
-      <!-- Large, Dominant, Adorable Silly Anime Girl Eating Chocolate -->
       <div id="cinematic-anime-hero" class="cinematic-anime-hero">
         <div class="anime-hero-aura" aria-hidden="true"></div>
-        <img
-          src="assets/anime-chocolate-girl.jpg"
+        <img src="assets/anime-chocolate-girl.jpg"
           onerror="this.onerror=null;this.src='assets/anime-chibi-chocolate.svg';"
-          alt="Adorable silly anime girl with teary sparkling eyes happily eating chocolate"
-          id="cinematic-anime-img"
-          class="cinematic-anime-img"
-        />
+          alt="Adorable silly anime girl with teary sparkling eyes happily eating chocolate" id="cinematic-anime-img"
+          class="cinematic-anime-img" />
       </div>
 
-      <!-- Sequential Final Cinematic Messages (Revealed one at a time after scene breathes) -->
       <div id="cinematic-messages-wrap" class="cinematic-messages-wrap" aria-live="polite">
-        <p id="cine-line-1" class="cine-line" hidden>Well, Joyce. That's your little surprise.</p>
+        <p id="cine-line-1" class="cine-line" hidden>Well, pretty girl. That's your little confession.</p>
         <p id="cine-line-2" class="cine-line" hidden>
-          Now go eat your chocolate, get some rest and stop giving that pretty head of yours unnecessary problems.
+          Now try to catch your breath, and good luck getting my thoughts out of your head for the rest of the day.
         </p>
         <p id="cine-line-3" class="cine-line" hidden>
-          And remember what I told you. Even on the days you don't feel like yourself, you've still got someone in your corner.
+          And Jay? Until the day I finally have you standing right in front of me—whether you're feeling playful, restless, or dangerously tempting...
         </p>
         <p id="cine-line-4" class="cine-line cine-line-highlight" hidden>
-          You've got me.
+          I'm counting down the moments until we make it real.
         </p>
 
         <div id="cine-final-block" class="cine-final-block" hidden>
           <p class="cine-menace-line">
-            Now behave yourself. Or don't. I know you won't anyway.
+            Now behave yourself today. Or send me another picture and make my self-control even worse.
           </p>
           <p class="cine-signoff-line">
-            Your favourite idiot. Still thinking about those eyes.
+            Still captivated by your eyes, your smile, and everything we haven't done yet.
           </p>
         </div>
       </div>
 
-      <!-- Playful Interactive Button: "One more chocolate? 🍫" -->
       <div id="cine-interactive-row" class="cine-interactive-row" hidden>
         <button id="one-more-chocolate-btn" class="btn-one-more-choco" type="button">
           <span>One more chocolate? 🍫</span>
@@ -467,22 +996,137 @@
       </div>
     </div>
 
-    <!-- Final Deep Black Fade-Out Screen ("End of transmission...") -->
     <div id="cinematic-epilogue-screen" class="cinematic-epilogue-screen" hidden>
       <p class="epilogue-transmission-text">
-        End of transmission. Until the next episode, Joyce. ✨
+        End of transmission. Until we finally meet, Jay. ✨
       </p>
     </div>
   </section>
 
   <!-- =====================================================================
+       DISCREET FLOATING YOUTUBE MUSIC CONTROLLER & COMPLIANT PLAYER DRAWER
+       Plays:
+       1. Wicked Games – The Weeknd (Opening interaction)
+       2. Earned It – The Weeknd (Main experience)
+       3. Adorn – Miguel (Final sections)
+       ===================================================================== -->
+  <aside
+    id="floating-music-controller"
+    class="floating-music-controller"
+    aria-label="Music Player Controls"
+  >
+    <!-- Docked Discreet 200x200 Compliant YouTube IFrame Drawer -->
+    <div
+      id="yt-player-drawer"
+      class="yt-player-drawer"
+      aria-hidden="true"
+    >
+      <div class="yt-drawer-header">
+        <span class="yt-drawer-title" id="yt-track-phase">Playlist • Track 1 of 3</span>
+        <button
+          id="yt-drawer-close-btn"
+          class="yt-drawer-close-btn"
+          type="button"
+          aria-label="Hide YouTube player window"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Sequential Playlist Display -->
+      <div class="yt-track-pills" role="list" aria-label="Sequential soundtrack playlist">
+        <div class="yt-track-pill active" data-playlist-index="0" role="listitem">
+          1. Wicked Games – The Weeknd
+        </div>
+        <div class="yt-track-pill" data-playlist-index="1" role="listitem">
+          2. Earned It – The Weeknd
+        </div>
+        <div class="yt-track-pill" data-playlist-index="2" role="listitem">
+          3. Adorn – Miguel
+        </div>
+      </div>
+
+      <!-- Official YouTube IFrame API target (Compliant 200x200px viewport) -->
+      <div class="yt-iframe-shell">
+        <div id="yt-iframe-player"></div>
+      </div>
+    </div>
+
+    <!-- Clear Playback Status / Blocked Playback Indicator Banner -->
+    <div
+      id="yt-status-banner"
+      class="yt-status-banner"
+      role="status"
+      aria-live="polite"
+      hidden
+    >
+      <span id="yt-status-text" class="yt-status-text"></span>
+      <button id="yt-status-action-btn" class="yt-status-action-btn" type="button" hidden>
+        Tap to Play ▶
+      </button>
+    </div>
+
+    <!-- Discreet Floating Controller Pill Bar -->
+    <div class="fmc-bar">
+      <button
+        id="yt-play-pause-btn"
+        class="fmc-icon-btn fmc-play-btn"
+        type="button"
+        aria-label="Play or pause music"
+        aria-pressed="false"
+      >
+        <span id="yt-play-pause-icon" aria-hidden="true">▶</span>
+      </button>
+
+      <div class="fmc-track-meta" id="fmc-track-meta" role="status" aria-live="polite">
+        <span class="fmc-song-title" id="yt-track-title">Wicked Games</span>
+        <span class="fmc-song-artist" id="yt-track-artist">The Weeknd</span>
+      </div>
+
+      <button
+        id="yt-mute-btn"
+        class="fmc-icon-btn fmc-mute-btn"
+        type="button"
+        aria-label="Mute or unmute music"
+        aria-pressed="false"
+      >
+        <span id="yt-mute-icon" aria-hidden="true">🔊</span>
+      </button>
+
+      <div class="fmc-volume-wrap">
+        <input
+          id="yt-volume-slider"
+          class="fmc-volume-slider"
+          type="range"
+          min="0"
+          max="100"
+          value="75"
+          aria-label="Music volume"
+        />
+      </div>
+
+      <button
+        id="yt-drawer-toggle-btn"
+        class="fmc-drawer-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="yt-player-drawer"
+        title="Show or hide discreet YouTube player"
+      >
+        <span>♫</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
        DEDICATED TOP-MOST FOREGROUND SPARKLE & PARTICLE OVERLAY
-       position: fixed • Full viewport • High z-index • pointer-events: none
-       Renders OVER the anime girl, text, and entire screen!
        ===================================================================== -->
   <canvas id="foreground-sparkles-canvas" class="foreground-sparkles-canvas" aria-hidden="true"></canvas>
   <div id="foreground-falling-chocolates" class="foreground-falling-chocolates" aria-hidden="true"></div>
 
+  <!-- Official YouTube IFrame Player API -->
+  <script src="https://www.youtube.com/iframe_api" async></script>
   <script src="script.js"></script>
 </body>
+
 </html>
